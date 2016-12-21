@@ -1,0 +1,8 @@
+<resources>
+
+    <string name="app_name">lib_widget</string>
+
+    <string name="lib_ilistview_footer_normal">View More</string>
+    <string name="lib_ilistview_footer_ready">Release</string>
+
+</resources>
