@@ -39,7 +39,7 @@ public class IListViewEmptyer extends LinearLayout implements IListView.IEmptyer
 	}
 
 	@Override
-	public Object onHandMessage(IListView mIListView, int cmd, Object... args) {
+	public Object onHandMessage(int cmd, Object... args) {
 		switch(cmd){
 
 			case CMD_EMPTY_SET_TEXT:
@@ -64,9 +64,9 @@ public class IListViewEmptyer extends LinearLayout implements IListView.IEmptyer
 	}
 
 	@Override
-	public void onEmptyerStop() {
+	public void onEmptyerStop(int listSize) {
 		emptyer.stopLoadingAnimation();
-		emptyer_result.setVisibility(View.VISIBLE);
+		emptyer_result.setVisibility(listSize ==0 ? View.VISIBLE : View.INVISIBLE);
 	}
 
 	@Override

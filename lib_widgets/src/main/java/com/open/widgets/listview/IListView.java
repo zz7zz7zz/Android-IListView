@@ -583,7 +583,7 @@ public class IListView extends ListView {
 		}
 	}
 
-	private long stopPull(int pullType , int oldDataSetSize)
+	private long stopPull(int pullType , int oldDataSetSize ,int newListSize)
 	{
 		long ms =0;
 		if(pullType == STATUS_PULL_DOWN && isPullDownLoading){
@@ -591,7 +591,7 @@ public class IListView extends ListView {
 			if(oldDataSetSize == 0){
 				//1.重置空EmptyView
 				if(null != mEmptyerView){
-					mEmptyerView.onEmptyerStop();
+					mEmptyerView.onEmptyerStop(newListSize);
 				}
 			}else{
 				//2.重置HeadView
@@ -680,7 +680,9 @@ public class IListView extends ListView {
 				task.run();
 			}
 
-			stopPull(pullType , mDataSetSize);
+			int newListSize = IListView.this.getCount() -  IListView.this.getHeaderViewsCount() -  IListView.this.getFooterViewsCount();
+
+			stopPull(pullType , mDataSetSize,newListSize);
 		}
 	}
 
@@ -754,19 +756,19 @@ public class IListView extends ListView {
 		switch (dst){
 			case DST_HEADER:
 				if(null != mHeaderView){
-					mHeaderView.onHandMessage(this,cmd,args);
+					mHeaderView.onHandMessage(cmd,args);
 				}
 				break;
 
 			case DST_EMPTY:
 				if(null != mEmptyerView){
-					mEmptyerView.onHandMessage(this,cmd,args);
+					mEmptyerView.onHandMessage(cmd,args);
 				}
 				break;
 
 			case DST_FOOTER:
 				if(null != mFooterView){
-					mFooterView.onHandMessage(this,cmd,args);
+					mFooterView.onHandMessage(cmd,args);
 				}
 				break;
 
@@ -788,7 +790,7 @@ public class IListView extends ListView {
 	//----------------------------Header/Footer/Emptyer实现类，用于不同View之间进行事件交互----------------------------------
 	public interface IMessageHandler
 	{
-		Object onHandMessage(IListView mPullListView, int cmd, Object... args);
+		Object onHandMessage(int cmd, Object... args);
 	}
 
 
@@ -819,7 +821,7 @@ public class IListView extends ListView {
 	public interface IEmptyerCallBack extends IMessageHandler {
 		void 	onEmptyerInit(Object... args);
 		void 	onEmptyerStart();
-		void 	onEmptyerStop();
+		void 	onEmptyerStop(int listSize);
 		void 	onEmptyerRelease();
 	}
 

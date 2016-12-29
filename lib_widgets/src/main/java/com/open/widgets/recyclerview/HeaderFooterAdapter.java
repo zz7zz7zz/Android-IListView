@@ -2,6 +2,7 @@ package com.open.widgets.recyclerview;
 
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -11,6 +12,8 @@ import android.view.ViewGroup;
  */
 
 public final class HeaderFooterAdapter extends RecyclerView.Adapter {
+
+    private static final String  TAG = "HeaderFooterAdapter";
 
     public static final int BASE_ITEM_VIEW_TYPE_HEADER = 100000;
     public static final int BASE_ITEM_VIEW_TYPE_FOOTER = 200000;
@@ -71,8 +74,13 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
 
     //-------------------------------------------------------------------------------
 
+    public boolean isEmpty() {
+        return mAdapter == null || mAdapter.getItemCount() == 0;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.v(TAG,"onCreateViewHolder " + viewType);
         if(null != mHeaderViewInfos.get(viewType)){
             return BaseViewHolder.createViewHolder(mHeaderViewInfos.get(viewType));
         }
@@ -84,6 +92,7 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        Log.v(TAG,"onBindViewHolder " + position);
         // Header (negative positions will throw an IndexOutOfBoundsException)
         int numHeaders = getHeadersCount();
         if (position < numHeaders) {
@@ -96,7 +105,7 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
         if (mAdapter != null) {
             adapterCount = mAdapter.getItemCount();
             if (adjPosition < adapterCount) {
-                mAdapter.onBindViewHolder(holder,position);
+                mAdapter.onBindViewHolder(holder,adjPosition);
                 return ;
             }
         }
@@ -123,16 +132,17 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
         }
 
         // Adapter
+        int mAdapterSize = 0;
         if (mAdapter != null && position >= numHeaders) {
             int adjPosition = position - numHeaders;
-            int adapterCount = mAdapter.getItemCount();
+            int adapterCount = mAdapterSize = mAdapter.getItemCount();
             if (adjPosition < adapterCount) {
                 return mAdapter.getItemViewType(adjPosition);
             }
         }
 
         // Footer (off-limits positions will throw an IndexOutOfBoundsException)
-        return BASE_ITEM_VIEW_TYPE_FOOTER+position;
+        return BASE_ITEM_VIEW_TYPE_FOOTER+(position-numHeaders-mAdapterSize);
     }
 
     public long getItemId(int position) {

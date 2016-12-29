@@ -78,7 +78,7 @@ public class IListViewHeader extends LinearLayout implements IListView.IHeaderCa
 	}
 
 	@Override
-	public Object onHandMessage(IListView mIListView, int cmd, Object... args) {
+	public Object onHandMessage(int cmd, Object... args) {
 
 		switch(cmd){
 

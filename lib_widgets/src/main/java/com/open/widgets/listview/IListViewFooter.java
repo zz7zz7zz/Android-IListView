@@ -113,7 +113,7 @@ public class IListViewFooter extends LinearLayout implements IListView.IFooterCa
 	}
 
 	@Override
-	public Object onHandMessage(IListView mIListView, int cmd, Object... args) {
+	public Object onHandMessage(int cmd, Object... args) {
 		switch(cmd){
 
 			case CMD_BOTTOM_SET_TEXT:

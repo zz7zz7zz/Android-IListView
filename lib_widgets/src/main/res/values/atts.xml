@@ -27,4 +27,24 @@
         <attr name = "load_foreground"     format = "reference" />
     </declare-styleable>
 
+    <!-- 下拉IRecyclerView -->
+    <declare-styleable name="IRecyclerView">
+        <attr name="recyclerview_pull_capacity">
+            <flag  name="NONE" 	        value="0" />
+            <flag  name="PULL_DOWN" 	value="1" />
+            <flag  name="PULL_UP"   	value="2" />
+            <flag  name="AUTO_PULLUP"   value="4" />
+        </attr>
+        <attr name = "recyclerview_pull_tag"                             format = "string" />
+        <attr name = "recyclerview_pull_smooth_transition_duration"      format = "integer" />
+
+        <attr name = "recyclerview_pull_header_classname"    format = "string" />
+        <attr name = "recyclerview_pull_emptyer_classname"   format = "string" />
+        <attr name = "recyclerview_pull_footer_classname"    format = "string" />
+
+        <attr name = "recyclerview_pull_more_visible_count"      format = "integer" />
+        <attr name = "recyclerview_pull_trigger_dis_pulldown"    format = "dimension" />
+        <attr name = "recyclerview_pull_trigger_dis_pullup"      format = "dimension" />
+    </declare-styleable>
+
 </resources>
