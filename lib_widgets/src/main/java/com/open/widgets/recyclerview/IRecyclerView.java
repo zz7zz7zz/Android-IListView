@@ -311,6 +311,8 @@ public class IRecyclerView extends RecyclerView {
 
     protected void initView()
     {
+        selfAddOnScrollListener();
+
         //1.空数据UI
         addEmptyerView();
 
@@ -319,6 +321,31 @@ public class IRecyclerView extends RecyclerView {
 
         //3.添加尾部
         addFooterView();
+    }
+
+    private void selfAddOnScrollListener(){
+        addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if(newState == RecyclerView.SCROLL_STATE_IDLE){
+
+                    //只有在没有加载完成的情况下才去判断是否加载更多
+                    if(!isPullUpLoading && isAutoPullUpEnabled() && null !=getAdapter()){
+                        int lastPosition =  getLastVisiblePosition();
+                        if (lastPosition == getAdapter().getItemCount()-1){
+                            startPullUpLoading();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
     }
 
     public void setPullEventListener(IListView.IPullEventListener mIPullEvent) {

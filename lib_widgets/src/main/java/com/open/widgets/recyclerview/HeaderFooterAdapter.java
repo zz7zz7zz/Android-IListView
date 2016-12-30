@@ -116,16 +116,23 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
+        int itemCount ;
         if (mAdapter != null) {
-            return getFootersCount() + getHeadersCount() + mAdapter.getItemCount();
+            itemCount = getFootersCount() + getHeadersCount() + mAdapter.getItemCount();
         } else {
-            return getFootersCount() + getHeadersCount();
+            itemCount = getFootersCount() + getHeadersCount();
         }
+
+        Log.v(TAG,"getItemCount " + itemCount );
+        return itemCount;
     }
 
     @Override
     public int getItemViewType(int position) {
+        Log.v(TAG,"getItemViewType " + position + " mAdapter.getItemCount() "+mAdapter.getItemCount());
         // Header (negative positions will throw an IndexOutOfBoundsException)
+
+
         int numHeaders = getHeadersCount();
         if(position < numHeaders){
             return BASE_ITEM_VIEW_TYPE_HEADER+position;
@@ -146,6 +153,7 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
     }
 
     public long getItemId(int position) {
+        Log.v(TAG,"getItemId " + position);
         int numHeaders = getHeadersCount();
         if (mAdapter != null && position >= numHeaders) {
             int adjPosition = position - numHeaders;
@@ -156,5 +164,4 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
         }
         return -1;
     }
-
 }

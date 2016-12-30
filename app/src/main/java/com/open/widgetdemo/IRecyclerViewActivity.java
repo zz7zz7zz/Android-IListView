@@ -49,8 +49,8 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
         mIRecyclerView.setLayoutManager(mLayoutManager);
         mIRecyclerView.setAdapter(mIAdapter);
 
-        mIRecyclerView.setPullEventListener(this);
 
+        mIRecyclerView.setPullEventListener(this);
         mIRecyclerView.startPullDownLoading();
     }
 
@@ -92,7 +92,13 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
             }
 
             bindDataList.addAll(0,t_bindDataList);
-            mIAdapter.notifyDataSetChanged();
+//            mIAdapter.notifyDataSetChanged();
+//            mIAdapter.notifyItemRangeChanged(0,10);
+//            mIAdapter.notifyItemRangeChanged(0,bindDataList.size());
+//            mIAdapter.notifyItemRangeInserted(0,10);
+
+            mIRecyclerView.getAdapter().notifyDataSetChanged();
+//            mIRecyclerView.getAdapter().notifyItemRangeInserted(0,10);
 
             listView_size.setText("" + bindDataList.size());
         }
@@ -110,8 +116,8 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
             max_index += t_bindDataList.size();
             int oldSize = bindDataList.size();
             bindDataList.addAll(t_bindDataList);
-            mIAdapter.notifyItemRangeInserted(oldSize,10);
-
+//            mIAdapter.notifyItemRangeInserted(oldSize,10);
+            mIRecyclerView.getAdapter().notifyItemRangeInserted(oldSize,10);
             listView_size.setText("" + bindDataList.size());
         }
     };
