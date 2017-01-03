@@ -101,6 +101,7 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Log.v(TAG,"onBindViewHolder " + position);
+
         // Header (negative positions will throw an IndexOutOfBoundsException)
         int numHeaders = getHeadersCount();
         if (position < numHeaders) {
@@ -139,7 +140,6 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
     public int getItemViewType(int position) {
         Log.v(TAG,"getItemViewType " + position + " mAdapter.getItemCount() "+mAdapter.getItemCount());
         // Header (negative positions will throw an IndexOutOfBoundsException)
-
 
         int numHeaders = getHeadersCount();
         if(position < numHeaders){
@@ -219,7 +219,6 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
-        super.onViewAttachedToWindow(holder);
         mAdapter.onViewAttachedToWindow(holder);
 
         int position = holder.getLayoutPosition();

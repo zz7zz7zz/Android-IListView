@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,6 +17,7 @@ import com.open.widgets.listview.IListViewHeader;
 import com.open.widgets.recyclerview.BaseRecyclerAdapter;
 import com.open.widgets.recyclerview.BaseViewHolder;
 import com.open.widgets.recyclerview.IRecyclerView;
+import com.open.widgets.recyclerview.LinearDividerItemDecoration;
 
 import java.util.ArrayList;
 
@@ -51,6 +53,9 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
 //        mLayoutManager = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
 
         mIRecyclerView.setLayoutManager(mLayoutManager);
+        mIRecyclerView.addItemDecoration(new LinearDividerItemDecoration(
+                mLayoutManager.canScrollVertically() ? LinearDividerItemDecoration.ORIENTATION_VERTICAL : LinearDividerItemDecoration.ORIENTATION_HORIZONTAL,
+                ContextCompat.getDrawable(getApplicationContext(),R.drawable.linear_itemdecoration)));
         mIRecyclerView.setAdapter(mIAdapter);
 
 
