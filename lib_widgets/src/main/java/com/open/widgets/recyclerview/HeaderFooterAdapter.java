@@ -1,7 +1,9 @@
 package com.open.widgets.recyclerview;
 
 import android.support.v4.util.SparseArrayCompat;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,9 +84,15 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Log.v(TAG,"onCreateViewHolder " + viewType);
         if(null != mHeaderViewInfos.get(viewType)){
+            if(null !=mHeaderViewInfos.get(viewType)){
+                mHeaderViewInfos.get(viewType).setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+            }
             return BaseViewHolder.createViewHolder(mHeaderViewInfos.get(viewType));
         }
         else if(null != mFooterViewInfos.get(viewType)){
+            if(null !=mFooterViewInfos.get(viewType)){
+                mFooterViewInfos.get(viewType).setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+            }
             return BaseViewHolder.createViewHolder(mFooterViewInfos.get(viewType));
         }
         return mAdapter.onCreateViewHolder(parent,viewType);
@@ -163,5 +171,68 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
             }
         }
         return -1;
+    }
+
+    @Override
+    public void registerAdapterDataObserver(RecyclerView.AdapterDataObserver observer) {
+        if (mAdapter != null) {
+            mAdapter.registerAdapterDataObserver(observer);
+        }
+    }
+
+    @Override
+    public void unregisterAdapterDataObserver(RecyclerView.AdapterDataObserver observer) {
+        if (mAdapter != null) {
+            mAdapter.unregisterAdapterDataObserver(observer);
+        }
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        mAdapter.onAttachedToRecyclerView(recyclerView);
+
+        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+        if(layoutManager instanceof GridLayoutManager) {
+            final GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
+            final GridLayoutManager.SpanSizeLookup oldSpanSizeLookup = gridLayoutManager.getSpanSizeLookup();
+
+            gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+
+                    int retSpanSize = 1;
+                    int viewType = getItemViewType(position);
+                    if (mHeaderViewInfos.get(viewType) != null || mFooterViewInfos.get(viewType) != null) {
+                        retSpanSize = gridLayoutManager.getSpanCount();
+                    }else if (oldSpanSizeLookup != null){
+                        retSpanSize = oldSpanSizeLookup.getSpanSize(position);
+                    }
+
+                    Log.v(TAG,"onAttachedToRecyclerView "  + " getItemViewType("+position+") "+getItemViewType(position) + " retSpanSize "+retSpanSize);
+                    return retSpanSize;
+                }
+            });
+            gridLayoutManager.setSpanCount(gridLayoutManager.getSpanCount());
+        }
+
+    }
+
+    @Override
+    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        mAdapter.onViewAttachedToWindow(holder);
+
+        int position = holder.getLayoutPosition();
+        int viewType = getItemViewType(position);
+        if (mHeaderViewInfos.get(viewType) != null || mFooterViewInfos.get(viewType) != null)
+        {
+            ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
+
+            if (lp != null && lp instanceof StaggeredGridLayoutManager.LayoutParams)
+            {
+                StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) lp;
+                p.setFullSpan(true);
+            }
+        }
     }
 }

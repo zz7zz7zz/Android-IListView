@@ -142,7 +142,7 @@ public class IRecyclerView extends RecyclerView {
         mEmptyView = emptyView;
 
         final Adapter adapter = getAdapter();
-        boolean empty = false;
+        boolean empty;
         if(null != adapter){
             if(adapter instanceof HeaderFooterAdapter){
                 empty = ((HeaderFooterAdapter) adapter).isEmpty();
@@ -193,7 +193,7 @@ public class IRecyclerView extends RecyclerView {
     }
 
     //-------------------------------------------------------------------------------------------
-    public static final String TAG = "IListView";
+    public static final String TAG = "IRecyclerView";
 
     //-----------------------静态属性-----------------------------
     private static final int ENABLED_PULL_NONE		= 0x00000000;//不可上拉/下拉/滑到底部自动更新
@@ -233,7 +233,6 @@ public class IRecyclerView extends RecyclerView {
     private boolean isPullDownLoading = false;
     private boolean isPullUpLoading   = false;
     private IListView.IPullEventListener mPullEventListener = null;
-    private AbsListView.OnScrollListener subOnScrollListener=null;
     private int mTotalItemCount;
 
     //头部UI
@@ -311,7 +310,7 @@ public class IRecyclerView extends RecyclerView {
 
     protected void initView()
     {
-        selfAddOnScrollListener();
+        internalAddOnScrollListener();
 
         //1.空数据UI
         addEmptyerView();
@@ -323,7 +322,7 @@ public class IRecyclerView extends RecyclerView {
         addFooterView();
     }
 
-    private void selfAddOnScrollListener(){
+    private void internalAddOnScrollListener(){
         addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -363,6 +362,7 @@ public class IRecyclerView extends RecyclerView {
             mLastY = ev.getRawY();
             isSlideUp = false;
             mDataSetSize = IRecyclerView.this.getCount() -  getHeaderViewsCount() -  getFooterViewsCount();
+            mTotalItemCount = null != getAdapter() ? getAdapter().getItemCount() : 0;
         }
 
         switch(ev.getAction())
@@ -376,7 +376,7 @@ public class IRecyclerView extends RecyclerView {
                 final float deltaY = ev.getRawY() - mLastY;
                 mLastY = ev.getRawY();
 
-                Log.v("IRecyclerView","AAA getFirstVisiblePosition " + getFirstVisiblePosition() + " getLastVisiblePosition "+ getLastVisiblePosition());
+                Log.v("IRecyclerView","AAA getFirstVisiblePosition " + getFirstVisiblePosition() + " getLastVisiblePosition "+ getLastVisiblePosition() + " mTotalItemCount "+ mTotalItemCount);
                 isSlideUp = (deltaY < 0);
                 if(mDataSetSize>0){//只有在大于0的情况下才可以下拉/上拉动作, 否则只允许点击空白区域进行加载
                     if((getFirstVisiblePosition() == 1 || getFirstVisiblePosition() == 0)&& !isPullDownLoading && isPullDownEnabled()) {
@@ -391,8 +391,8 @@ public class IRecyclerView extends RecyclerView {
 
             default:
                 if(mDataSetSize>0) {//只有在大于0的情况下才可以下拉/上拉动作, 否则只允许点击空白区域进行加载
-                    Log.v("IRecyclerView","BBB getFirstVisiblePosition " + getFirstVisiblePosition() + " getLastVisiblePosition "+ getLastVisiblePosition());
-                    if ((getFirstVisiblePosition() == 1 || getFirstVisiblePosition() == 0) && !isPullDownLoading && isPullDownEnabled() && canPullDown())
+                    Log.v("IRecyclerView","BBB getFirstVisiblePosition " + getFirstVisiblePosition() + " getLastVisiblePosition "+ getLastVisiblePosition()+ " mTotalItemCount "+ mTotalItemCount);
+                    if (getFirstVisiblePosition() == 0 && !isPullDownLoading && isPullDownEnabled() && canPullDown())
                     {
                         startPullDownLoading(0);
                     }

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.open.widgets.R;
 import com.open.widgets.listview.IListView;
 import com.open.widgets.listview.IListViewHeader;
+import com.open.widgets.recyclerview.BaseRecyclerAdapter;
 import com.open.widgets.recyclerview.BaseViewHolder;
 import com.open.widgets.recyclerview.IRecyclerView;
 
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 public class IRecyclerViewActivity extends Activity implements IListView.IPullEventListener{
 
     //-------------UI-------------
-    private LinearLayoutManager mLayoutManager;
+    protected RecyclerView.LayoutManager mLayoutManager;
     private IRecyclerView mIRecyclerView;
     private TextView  listView_size;
 
@@ -46,6 +47,9 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
         listView_size   = (TextView) findViewById(R.id.listView_size);
 
         mLayoutManager      = new LinearLayoutManager(getApplicationContext());
+//        mLayoutManager      = new GridLayoutManager(getApplicationContext(), 2);
+//        mLayoutManager = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
+
         mIRecyclerView.setLayoutManager(mLayoutManager);
         mIRecyclerView.setAdapter(mIAdapter);
 
@@ -92,12 +96,12 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
             }
 
             bindDataList.addAll(0,t_bindDataList);
-//            mIAdapter.notifyDataSetChanged();
-//            mIAdapter.notifyItemRangeChanged(0,10);
+            mIAdapter.notifyDataSetChanged();
+//            mIAdapter.notifyItemRangeChanged(mIRecyclerView,0,10);
 //            mIAdapter.notifyItemRangeChanged(0,bindDataList.size());
 //            mIAdapter.notifyItemRangeInserted(0,10);
 
-            mIRecyclerView.getAdapter().notifyDataSetChanged();
+//            mIRecyclerView.getAdapter().notifyDataSetChanged();
 //            mIRecyclerView.getAdapter().notifyItemRangeInserted(0,10);
 
             listView_size.setText("" + bindDataList.size());
@@ -116,14 +120,14 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
             max_index += t_bindDataList.size();
             int oldSize = bindDataList.size();
             bindDataList.addAll(t_bindDataList);
-//            mIAdapter.notifyItemRangeInserted(oldSize,10);
-            mIRecyclerView.getAdapter().notifyItemRangeInserted(oldSize,10);
+            mIAdapter.notifyItemRangeInserted(mIRecyclerView,oldSize,10);
+//            mIRecyclerView.getAdapter().notifyItemRangeInserted(oldSize,10);
             listView_size.setText("" + bindDataList.size());
         }
     };
 
     //------------------------------Adapter------------------------------
-    public static class IAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+    public static class IAdapter extends BaseRecyclerAdapter{
 
         private static final String  TAG = "IAdapter";
 
@@ -144,13 +148,6 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//            TextView view = new TextView(mContext);
-//            view.setHeight(150);
-//            view.setBackgroundColor(Color.GREEN);
-//            view.setTextColor(Color.GRAY);
-//            view.setGravity(Gravity.CENTER);
-//            return BaseViewHolder.createViewHolder(view);
-
             Log.v(TAG,"onCreateViewHolder " + viewType);
             return BaseViewHolder.createViewHolder(mContext,parent,R.layout.demo_recyclerview_item);
         }
