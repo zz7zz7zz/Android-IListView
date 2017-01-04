@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 public class BaseViewHolder extends RecyclerView.ViewHolder{
 
-    public BaseViewHolder( View itemView)
+    public BaseViewHolder(View itemView)
     {
         super(itemView);
     }

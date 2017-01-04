@@ -26,7 +26,7 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
 
     static final SparseArrayCompat<View> EMPTY_INFO_LIST = new SparseArrayCompat<>(0);
 
-    public HeaderFooterAdapter(SparseArrayCompat<View> headerViewInfos, SparseArrayCompat<View> footerViewInfos, RecyclerView.Adapter mAdapter) {
+    HeaderFooterAdapter(SparseArrayCompat<View> headerViewInfos, SparseArrayCompat<View> footerViewInfos, RecyclerView.Adapter mAdapter) {
 
         if (headerViewInfos == null) {
             mHeaderViewInfos = EMPTY_INFO_LIST;
@@ -189,7 +189,7 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        mAdapter.onAttachedToRecyclerView(recyclerView);
+        super.onAttachedToRecyclerView(recyclerView);
 
         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
         if(layoutManager instanceof GridLayoutManager) {
@@ -219,7 +219,7 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
-        mAdapter.onViewAttachedToWindow(holder);
+        super.onViewAttachedToWindow(holder);
 
         int position = holder.getLayoutPosition();
         int viewType = getItemViewType(position);

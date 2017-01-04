@@ -5,8 +5,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -16,15 +18,17 @@ import com.open.widgets.listview.IListView;
 import com.open.widgets.listview.IListViewHeader;
 import com.open.widgets.recyclerview.BaseRecyclerAdapter;
 import com.open.widgets.recyclerview.BaseViewHolder;
+import com.open.widgets.recyclerview.DividerGridItemDecoration;
+import com.open.widgets.recyclerview.DividerLinearItemDecoration;
 import com.open.widgets.recyclerview.IRecyclerView;
-import com.open.widgets.recyclerview.LinearDividerItemDecoration;
 
 import java.util.ArrayList;
 
 public class IRecyclerViewActivity extends Activity implements IListView.IPullEventListener{
 
     //-------------UI-------------
-    protected RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView.ItemDecoration decor;
     private IRecyclerView mIRecyclerView;
     private TextView  listView_size;
 
@@ -48,19 +52,33 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
         mIRecyclerView = (IRecyclerView)findViewById(R.id.listView);
         listView_size   = (TextView) findViewById(R.id.listView_size);
 
-        mLayoutManager      = new LinearLayoutManager(getApplicationContext());
-//        mLayoutManager      = new GridLayoutManager(getApplicationContext(), 2);
-//        mLayoutManager = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
+//        linearLayout();
+        gridLayout();
+//        staggeredGridLayout();
 
         mIRecyclerView.setLayoutManager(mLayoutManager);
-        mIRecyclerView.addItemDecoration(new LinearDividerItemDecoration(
-                mLayoutManager.canScrollVertically() ? LinearDividerItemDecoration.ORIENTATION_VERTICAL : LinearDividerItemDecoration.ORIENTATION_HORIZONTAL,
-                ContextCompat.getDrawable(getApplicationContext(),R.drawable.linear_itemdecoration)));
+        mIRecyclerView.addItemDecoration(decor);
         mIRecyclerView.setAdapter(mIAdapter);
 
 
         mIRecyclerView.setPullEventListener(this);
         mIRecyclerView.startPullDownLoading();
+    }
+
+    private void linearLayout(){
+        mLayoutManager      = new LinearLayoutManager(getApplicationContext());
+        decor = new DividerLinearItemDecoration(mLayoutManager.canScrollVertically() ? DividerLinearItemDecoration.ORIENTATION_VERTICAL : DividerLinearItemDecoration.ORIENTATION_HORIZONTAL,
+                ContextCompat.getDrawable(getApplicationContext(),R.drawable.linear_itemdecoration));
+    }
+
+    private void gridLayout(){
+        mLayoutManager      = new GridLayoutManager(getApplicationContext(), 2);
+        decor = new DividerGridItemDecoration(ContextCompat.getDrawable(getApplicationContext(),R.drawable.linear_itemdecoration));
+    }
+
+    private void staggeredGridLayout(){
+        mLayoutManager = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
+        decor = new DividerGridItemDecoration(ContextCompat.getDrawable(getApplicationContext(),R.drawable.linear_itemdecoration));
     }
 
     @Override

@@ -10,7 +10,7 @@ import android.view.View;
  * Created by long on 2017/1/3.
  */
 
-public class LinearDividerItemDecoration extends RecyclerView.ItemDecoration {
+public class DividerLinearItemDecoration extends RecyclerView.ItemDecoration {
 
     public static final int ORIENTATION_HORIZONTAL  = 1;
     public static final int ORIENTATION_VERTICAL    = 2;
@@ -18,7 +18,7 @@ public class LinearDividerItemDecoration extends RecyclerView.ItemDecoration {
     private Drawable mDivider;
     private int mOrientation;
 
-    public LinearDividerItemDecoration(int mOrientation, Drawable mDivider) {
+    public DividerLinearItemDecoration(int mOrientation, Drawable mDivider) {
         this.mOrientation = mOrientation;
         this.mDivider = mDivider;
     }
