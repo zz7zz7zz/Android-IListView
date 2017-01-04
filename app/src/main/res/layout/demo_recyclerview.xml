@@ -24,8 +24,8 @@
         app:recyclerview_pull_footer_classname="com.open.widgets.listview.IListViewFooter" />
 
     <TextView
-        android:id="@+id/listView_size"
-        android:layout_width="50dp"
+        android:id="@+id/linear"
+        android:layout_width="180dp"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="20dp"
@@ -33,7 +33,31 @@
         android:layout_gravity="right"
         android:background="@drawable/bg_corner"
         android:textColor="#FFFFFFFF"
-        android:text="0"/>
+        android:text="LinearLayout 0"/>
+
+    <TextView
+        android:id="@+id/grid"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center"
+        android:layout_gravity="right"
+        android:background="@drawable/bg_corner"
+        android:textColor="#FFFFFFFF"
+        android:text="GridLayout 0"/>
+
+    <TextView
+        android:id="@+id/staggeredGrid"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="180dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center"
+        android:layout_gravity="right"
+        android:background="@drawable/bg_corner"
+        android:textColor="#FFFFFFFF"
+        android:text="StaggeredGridLayout 0"/>
 
 </FrameLayout>
 

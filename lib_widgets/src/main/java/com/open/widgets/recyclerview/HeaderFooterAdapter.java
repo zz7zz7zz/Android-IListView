@@ -131,14 +131,17 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
         } else {
             itemCount = getFootersCount() + getHeadersCount();
         }
-
-        Log.v(TAG,"getItemCount " + itemCount );
         return itemCount;
+    }
+
+    int getRealItemCount()
+    {
+        return null != mAdapter ? mAdapter.getItemCount() : 0;
     }
 
     @Override
     public int getItemViewType(int position) {
-        Log.v(TAG,"getItemViewType " + position + " mAdapter.getItemCount() "+mAdapter.getItemCount());
+        Log.v(TAG,"getItemViewType ( " + position + " ) getItemCount " + getItemCount() + " mAdapter.getItemCount() "+mAdapter.getItemCount());
         // Header (negative positions will throw an IndexOutOfBoundsException)
 
         int numHeaders = getHeadersCount();

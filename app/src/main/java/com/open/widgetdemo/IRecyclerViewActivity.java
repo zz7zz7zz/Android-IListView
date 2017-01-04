@@ -5,11 +5,13 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -30,7 +32,10 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.ItemDecoration decor;
     private IRecyclerView mIRecyclerView;
-    private TextView  listView_size;
+    private TextView linear;
+    private TextView grid;
+    private TextView staggeredGrid;
+    private TextView currentTextView;
 
     //-------------DATA-------------
     private Handler mHandler = new Handler();
@@ -38,6 +43,7 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
     private ArrayList<String> bindDataList;
     private IAdapter mIAdapter;
 
+    private int pulldown_count = 0;
     private int min_index = 0;//最小索引
     private int max_index = 0;//最大索引
 
@@ -46,18 +52,82 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
         super.onCreate(savedInstanceState);
         setContentView(R.layout.demo_recyclerview);
 
+
+
+        mIRecyclerView  = (IRecyclerView)findViewById(R.id.listView);
+        linear          = (TextView) findViewById(R.id.linear);
+        grid            = (TextView) findViewById(R.id.grid);
+        staggeredGrid   = (TextView) findViewById(R.id.staggeredGrid);
+
+        View.OnClickListener listener= new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+                switch (v.getId()){
+
+                    case R.id.linear:
+                        currentTextView = linear;
+                        linearLayout();
+                        break;
+
+                    case R.id.grid:
+                        currentTextView = grid;
+                        gridLayout();
+                        break;
+
+                    case R.id.staggeredGrid:
+                        currentTextView = staggeredGrid;
+                        staggeredGridLayout();
+                        break;
+                }
+
+                mIRecyclerView.setVisibility(View.GONE);
+                linear.setText("linear");
+                grid.setText("grid");
+                staggeredGrid.setText("staggeredGrid");
+
+                pulldown_count = 0;
+                min_index = 0;
+                max_index = 0;
+            }
+        };
+
+        linear.setOnClickListener(listener);
+        grid.setOnClickListener(listener);
+        staggeredGrid.setOnClickListener(listener);
+
+        linear.performClick();
+    }
+
+    private void linearLayout(){
+        mLayoutManager      = new LinearLayoutManager(getApplicationContext());
+        decor = new DividerLinearItemDecoration(mLayoutManager.canScrollVertically() ? DividerLinearItemDecoration.ORIENTATION_VERTICAL : DividerLinearItemDecoration.ORIENTATION_HORIZONTAL,
+                ContextCompat.getDrawable(getApplicationContext(),R.drawable.linear_itemdecoration));
+
         bindDataList    = new ArrayList<>();
         mIAdapter       = new IAdapter(getApplicationContext(),bindDataList);
 
-        mIRecyclerView = (IRecyclerView)findViewById(R.id.listView);
-        listView_size   = (TextView) findViewById(R.id.listView_size);
+        mIRecyclerView.setLayoutManager(mLayoutManager);
+        mIRecyclerView.addItemDecoration(decor);
+        mIRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mIRecyclerView.setAdapter(mIAdapter);
 
-//        linearLayout();
-        gridLayout();
-//        staggeredGridLayout();
+        mIRecyclerView.setPullEventListener(this);
+        mIRecyclerView.startPullDownLoading();
+    }
+
+    private void gridLayout(){
+        mLayoutManager      = new GridLayoutManager(getApplicationContext(), 2);
+        decor = new DividerGridItemDecoration(ContextCompat.getDrawable(getApplicationContext(),R.drawable.linear_itemdecoration));
+
+        bindDataList    = new ArrayList<>();
+        mIAdapter       = new IAdapter(getApplicationContext(),bindDataList);
 
         mIRecyclerView.setLayoutManager(mLayoutManager);
         mIRecyclerView.addItemDecoration(decor);
+        mIRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mIRecyclerView.setAdapter(mIAdapter);
 
 
@@ -65,20 +135,20 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
         mIRecyclerView.startPullDownLoading();
     }
 
-    private void linearLayout(){
-        mLayoutManager      = new LinearLayoutManager(getApplicationContext());
-        decor = new DividerLinearItemDecoration(mLayoutManager.canScrollVertically() ? DividerLinearItemDecoration.ORIENTATION_VERTICAL : DividerLinearItemDecoration.ORIENTATION_HORIZONTAL,
-                ContextCompat.getDrawable(getApplicationContext(),R.drawable.linear_itemdecoration));
-    }
-
-    private void gridLayout(){
-        mLayoutManager      = new GridLayoutManager(getApplicationContext(), 2);
-        decor = new DividerGridItemDecoration(ContextCompat.getDrawable(getApplicationContext(),R.drawable.linear_itemdecoration));
-    }
-
     private void staggeredGridLayout(){
         mLayoutManager = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
         decor = new DividerGridItemDecoration(ContextCompat.getDrawable(getApplicationContext(),R.drawable.linear_itemdecoration));
+
+        bindDataList    = new ArrayList<>();
+        mIAdapter       = new IAdapter(getApplicationContext(),bindDataList);
+
+        mIRecyclerView.setLayoutManager(mLayoutManager);
+        mIRecyclerView.addItemDecoration(decor);
+        mIRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mIRecyclerView.setAdapter(mIAdapter);
+
+        mIRecyclerView.setPullEventListener(this);
+        mIRecyclerView.startPullDownLoading();
     }
 
     @Override
@@ -103,7 +173,7 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
         },2000);
     }
 
-    private int pulldown_count = 0;
+
     private Runnable mPullDownCallBack = new Runnable() {
         @Override
         public void run() {
@@ -120,14 +190,12 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
 
             bindDataList.addAll(0,t_bindDataList);
             mIAdapter.notifyDataSetChanged();
-//            mIAdapter.notifyItemRangeChanged(mIRecyclerView,0,10);
-//            mIAdapter.notifyItemRangeChanged(0,bindDataList.size());
-//            mIAdapter.notifyItemRangeInserted(0,10);
+//            mIAdapter.notifyItemRangeInserted(mIRecyclerView,0,10);
 
 //            mIRecyclerView.getAdapter().notifyDataSetChanged();
 //            mIRecyclerView.getAdapter().notifyItemRangeInserted(0,10);
 
-            listView_size.setText("" + bindDataList.size());
+            currentTextView.setText("" + bindDataList.size());
         }
     };
 
@@ -145,7 +213,8 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
             bindDataList.addAll(t_bindDataList);
             mIAdapter.notifyItemRangeInserted(mIRecyclerView,oldSize,10);
 //            mIRecyclerView.getAdapter().notifyItemRangeInserted(oldSize,10);
-            listView_size.setText("" + bindDataList.size());
+
+            currentTextView.setText("" + bindDataList.size());
         }
     };
 
