@@ -102,8 +102,10 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
 
     private void linearLayout(){
         mLayoutManager      = new LinearLayoutManager(getApplicationContext());
+        //((LinearLayoutManager)mLayoutManager).setOrientation(LinearLayoutManager.HORIZONTAL);
+
         decor = new DividerLinearItemDecoration(mLayoutManager.canScrollVertically() ? DividerLinearItemDecoration.ORIENTATION_VERTICAL : DividerLinearItemDecoration.ORIENTATION_HORIZONTAL,
-                ContextCompat.getDrawable(getApplicationContext(),R.drawable.linear_itemdecoration));
+                ContextCompat.getDrawable(getApplicationContext(),R.drawable.linear_itemdecoration),true);
 
         bindDataList    = new ArrayList<>();
         mIAdapter       = new IAdapter(getApplicationContext(),bindDataList);

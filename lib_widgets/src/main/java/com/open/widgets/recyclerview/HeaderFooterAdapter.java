@@ -74,6 +74,27 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
         return mFooterViewInfos.size();
     }
 
+    public boolean isAdapterData(int position) {
+        // Header (negative positions will throw an IndexOutOfBoundsException)
+        int numHeaders = getHeadersCount();
+        if (position < numHeaders) {
+            return false;
+        }
+
+        // Adapter
+        final int adjPosition = position - numHeaders;
+        int adapterCount = 0;
+        if (mAdapter != null) {
+            adapterCount = mAdapter.getItemCount();
+            if (adjPosition < adapterCount) {
+                return true;
+            }
+        }
+
+        // Footer (off-limits positions will throw an IndexOutOfBoundsException)
+        return false;
+    }
+
     //-------------------------------------------------------------------------------
 
     public boolean isEmpty() {
