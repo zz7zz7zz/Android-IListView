@@ -175,7 +175,16 @@ public class IRecyclerView extends RecyclerView {
 
     private void checkFocus() {
         final Adapter adapter = getAdapter();
-        final boolean empty = adapter == null || adapter.getItemCount()== 0;
+        boolean empty;
+        if(null != adapter){
+            if(adapter instanceof HeaderFooterAdapter){
+                empty = ((HeaderFooterAdapter) adapter).isEmpty();
+            }else{
+                empty = (adapter.getItemCount() == 0);
+            }
+        }else{
+            empty = true;
+        }
         if (mEmptyView != null) {
             updateEmptyStatus(empty);
         }

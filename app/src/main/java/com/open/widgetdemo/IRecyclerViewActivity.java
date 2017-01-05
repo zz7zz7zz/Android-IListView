@@ -19,7 +19,7 @@ import com.open.widgets.R;
 import com.open.widgets.listview.IListView;
 import com.open.widgets.listview.IListViewHeader;
 import com.open.widgets.recyclerview.BaseRecyclerAdapter;
-import com.open.widgets.recyclerview.BaseViewHolder;
+import com.open.widgets.recyclerview.BaseRecyclerViewHolder;
 import com.open.widgets.recyclerview.DividerGridItemDecoration;
 import com.open.widgets.recyclerview.DividerLinearItemDecoration;
 import com.open.widgets.recyclerview.IRecyclerView;
@@ -83,7 +83,6 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
                         break;
                 }
 
-                mIRecyclerView.setVisibility(View.GONE);
                 linear.setText("linear");
                 grid.setText("grid");
                 staggeredGrid.setText("staggeredGrid");
@@ -234,14 +233,14 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             Log.v(TAG,"onBindViewHolder " + position + " text"+ bindDataList.get(position));
-            BaseViewHolder realHolder = (BaseViewHolder)holder;
+            BaseRecyclerViewHolder realHolder = (BaseRecyclerViewHolder)holder;
             ((TextView)(realHolder.itemView)).setText(bindDataList.get(position));
         }
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             Log.v(TAG,"onCreateViewHolder " + viewType);
-            return BaseViewHolder.createViewHolder(mContext,parent,R.layout.demo_recyclerview_item);
+            return BaseRecyclerViewHolder.createViewHolder(mContext,parent,R.layout.demo_recyclerview_item);
         }
 
         @Override

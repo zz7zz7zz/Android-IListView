@@ -44,6 +44,20 @@ public class DividerLinearItemDecoration extends RecyclerView.ItemDecoration {
         }
     }
 
+    @Override
+    public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
+        super.onDrawOver(c, parent, state);
+    }
+
+    @Override
+    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+        if (mOrientation == ORIENTATION_VERTICAL) {
+            outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
+        } else {
+            outRect.set(0, 0, mDivider.getIntrinsicWidth(), 0);
+        }
+    }
+
     public void drawVertical(Canvas c, RecyclerView parent) {
         final int left = parent.getPaddingLeft();
         final int right = parent.getWidth() - parent.getPaddingRight();
@@ -71,20 +85,6 @@ public class DividerLinearItemDecoration extends RecyclerView.ItemDecoration {
             final int right = left + mDivider.getIntrinsicHeight();
             mDivider.setBounds(left, top, right, bottom);
             mDivider.draw(c);
-        }
-    }
-
-    @Override
-    public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
-        super.onDrawOver(c, parent, state);
-    }
-
-    @Override
-    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        if (mOrientation == ORIENTATION_VERTICAL) {
-            outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
-        } else {
-            outRect.set(0, 0, mDivider.getIntrinsicWidth(), 0);
         }
     }
 }

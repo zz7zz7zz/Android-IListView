@@ -10,23 +10,23 @@ import android.view.ViewGroup;
  * Created by long on 2016/12/29.
  */
 
-public class BaseViewHolder extends RecyclerView.ViewHolder{
+public class BaseRecyclerViewHolder extends RecyclerView.ViewHolder{
 
-    public BaseViewHolder(View itemView)
+    public BaseRecyclerViewHolder(View itemView)
     {
         super(itemView);
     }
 
-    public static BaseViewHolder createViewHolder(View itemView)
+    public static BaseRecyclerViewHolder createViewHolder(View itemView)
     {
-        BaseViewHolder holder = new BaseViewHolder(itemView);
+        BaseRecyclerViewHolder holder = new BaseRecyclerViewHolder(itemView);
         return holder;
     }
 
-    public static BaseViewHolder createViewHolder(Context context, ViewGroup parent, int layoutId)
+    public static BaseRecyclerViewHolder createViewHolder(Context context, ViewGroup parent, int layoutId)
     {
         View itemView = LayoutInflater.from(context).inflate(layoutId, parent, false);
-        BaseViewHolder holder = new BaseViewHolder(itemView);
+        BaseRecyclerViewHolder holder = new BaseRecyclerViewHolder(itemView);
         return holder;
     }
 }

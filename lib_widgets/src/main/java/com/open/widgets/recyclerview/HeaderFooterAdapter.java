@@ -87,13 +87,13 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
             if(null !=mHeaderViewInfos.get(viewType)){
                 mHeaderViewInfos.get(viewType).setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
             }
-            return BaseViewHolder.createViewHolder(mHeaderViewInfos.get(viewType));
+            return BaseRecyclerViewHolder.createViewHolder(mHeaderViewInfos.get(viewType));
         }
         else if(null != mFooterViewInfos.get(viewType)){
             if(null !=mFooterViewInfos.get(viewType)){
                 mFooterViewInfos.get(viewType).setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
             }
-            return BaseViewHolder.createViewHolder(mFooterViewInfos.get(viewType));
+            return BaseRecyclerViewHolder.createViewHolder(mFooterViewInfos.get(viewType));
         }
         return mAdapter.onCreateViewHolder(parent,viewType);
     }
