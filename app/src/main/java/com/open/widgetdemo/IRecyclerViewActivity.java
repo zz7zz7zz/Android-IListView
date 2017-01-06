@@ -239,10 +239,6 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
             Log.v(TAG,"onBindViewHolder " + position + " text"+ bindDataList.get(position));
             BaseRecyclerViewHolder realHolder = (BaseRecyclerViewHolder)holder;
             ((TextView)(realHolder.itemView)).setText(bindDataList.get(position));
-
-            ViewGroup.LayoutParams lp = realHolder.itemView.getLayoutParams();
-            lp.height = 100+ (position%3)*50;
-            realHolder.itemView.setLayoutParams(lp);
         }
 
         @Override

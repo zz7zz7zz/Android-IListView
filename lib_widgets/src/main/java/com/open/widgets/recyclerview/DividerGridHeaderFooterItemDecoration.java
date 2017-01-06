@@ -96,6 +96,9 @@ public class DividerGridHeaderFooterItemDecoration extends RecyclerView.ItemDeco
             final int right = child.getRight() + params.rightMargin + mDivider.getIntrinsicWidth();
             final int top = child.getBottom() + params.bottomMargin;
             final int bottom = top + mDivider.getIntrinsicHeight();
+
+            Log.v(TAG,"i "+i+" drawHorizontal BBB top "+ top + " bottom "+bottom+ " left "+left+ " right "+right);
+
             mDivider.setBounds(left, top, right, bottom);
             mDivider.draw(c);
         }
@@ -125,7 +128,7 @@ public class DividerGridHeaderFooterItemDecoration extends RecyclerView.ItemDeco
             final int bottom = child.getBottom() + params.bottomMargin;
             final int left = child.getRight() + params.rightMargin;
             final int right = left + mDivider.getIntrinsicWidth();
-
+            Log.v(TAG,"i "+i+" drawVertical BBB top "+ top + " bottom "+bottom+ " left "+left+ " right "+right);
             mDivider.setBounds(left, top, right, bottom);
             mDivider.draw(c);
         }
