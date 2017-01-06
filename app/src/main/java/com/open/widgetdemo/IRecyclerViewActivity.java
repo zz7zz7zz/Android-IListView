@@ -20,13 +20,15 @@ import com.open.widgets.listview.IListView;
 import com.open.widgets.listview.IListViewHeader;
 import com.open.widgets.recyclerview.BaseRecyclerAdapter;
 import com.open.widgets.recyclerview.BaseRecyclerViewHolder;
-import com.open.widgets.recyclerview.DividerGridItemDecoration;
+import com.open.widgets.recyclerview.DividerGridHeaderFooterItemDecoration;
 import com.open.widgets.recyclerview.DividerLinearItemDecoration;
 import com.open.widgets.recyclerview.IRecyclerView;
 
 import java.util.ArrayList;
 
 public class IRecyclerViewActivity extends Activity implements IListView.IPullEventListener{
+
+    private static final int PER_PAGE_SIZE = 10;
 
     //-------------UI-------------
     private RecyclerView.LayoutManager mLayoutManager;
@@ -105,7 +107,7 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
         //((LinearLayoutManager)mLayoutManager).setOrientation(LinearLayoutManager.HORIZONTAL);
 
         decor = new DividerLinearItemDecoration(mLayoutManager.canScrollVertically() ? DividerLinearItemDecoration.ORIENTATION_VERTICAL : DividerLinearItemDecoration.ORIENTATION_HORIZONTAL,
-                ContextCompat.getDrawable(getApplicationContext(),R.drawable.linear_itemdecoration),true);
+                ContextCompat.getDrawable(getApplicationContext(),R.drawable.linear_itemdecoration),false,true);
 
         bindDataList    = new ArrayList<>();
         mIAdapter       = new IAdapter(getApplicationContext(),bindDataList);
@@ -120,8 +122,8 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
     }
 
     private void gridLayout(){
-        mLayoutManager      = new GridLayoutManager(getApplicationContext(), 2);
-        decor = new DividerGridItemDecoration(ContextCompat.getDrawable(getApplicationContext(),R.drawable.linear_itemdecoration));
+        mLayoutManager      = new GridLayoutManager(getApplicationContext(), 3);
+        decor = new DividerGridHeaderFooterItemDecoration(ContextCompat.getDrawable(getApplicationContext(),R.drawable.linear_itemdecoration),false,true);
 
         bindDataList    = new ArrayList<>();
         mIAdapter       = new IAdapter(getApplicationContext(),bindDataList);
@@ -137,8 +139,8 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
     }
 
     private void staggeredGridLayout(){
-        mLayoutManager = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
-        decor = new DividerGridItemDecoration(ContextCompat.getDrawable(getApplicationContext(),R.drawable.linear_itemdecoration));
+        mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+        decor = new DividerGridHeaderFooterItemDecoration(ContextCompat.getDrawable(getApplicationContext(),R.drawable.linear_itemdecoration),false,true);
 
         bindDataList    = new ArrayList<>();
         mIAdapter       = new IAdapter(getApplicationContext(),bindDataList);
@@ -179,8 +181,8 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
         @Override
         public void run() {
 
-            ArrayList<String> t_bindDataList = new ArrayList<>(10);
-            for (int i = 1;i<=10;i++){
+            ArrayList<String> t_bindDataList = new ArrayList<>(PER_PAGE_SIZE);
+            for (int i = 1;i<=PER_PAGE_SIZE;i++){
                 t_bindDataList.add(0,"Data (" + (min_index-i)+" ) ");
             }
             min_index -= t_bindDataList.size();
@@ -205,14 +207,14 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
         @Override
         public void run() {
 
-            ArrayList<String> t_bindDataList = new ArrayList<>(10);
-            for (int i = 1;i<=10;i++){
+            ArrayList<String> t_bindDataList = new ArrayList<>(PER_PAGE_SIZE);
+            for (int i = 1;i<=PER_PAGE_SIZE;i++){
                 t_bindDataList.add("Data (" + (max_index+i)+" ) ");
             }
             max_index += t_bindDataList.size();
             int oldSize = bindDataList.size();
             bindDataList.addAll(t_bindDataList);
-            mIAdapter.notifyItemRangeInserted(mIRecyclerView,oldSize,10);
+            mIAdapter.notifyItemRangeInserted(mIRecyclerView,oldSize,PER_PAGE_SIZE);
 //            mIRecyclerView.getAdapter().notifyItemRangeInserted(oldSize,10);
 
             currentTextView.setText("" + bindDataList.size());
@@ -237,6 +239,10 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
             Log.v(TAG,"onBindViewHolder " + position + " text"+ bindDataList.get(position));
             BaseRecyclerViewHolder realHolder = (BaseRecyclerViewHolder)holder;
             ((TextView)(realHolder.itemView)).setText(bindDataList.get(position));
+
+            ViewGroup.LayoutParams lp = realHolder.itemView.getLayoutParams();
+            lp.height = 100+ (position%3)*50;
+            realHolder.itemView.setLayoutParams(lp);
         }
 
         @Override

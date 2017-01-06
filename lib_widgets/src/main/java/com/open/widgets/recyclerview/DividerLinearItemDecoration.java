@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -19,12 +20,19 @@ public class DividerLinearItemDecoration extends RecyclerView.ItemDecoration {
 
     private int mOrientation;
     private Drawable mDivider;
-    private boolean isDrawHeaderFooterDivider = false;
+    private boolean isDrawHeaderDivider = false;
+    private boolean isDrawFooterDivider = true;
 
-    public DividerLinearItemDecoration(int mOrientation, Drawable mDivider, boolean isDrawHeaderFooterDivider) {
+    public DividerLinearItemDecoration(int mOrientation, Drawable mDivider) {
         this.mOrientation = mOrientation;
         this.mDivider = mDivider;
-        this.isDrawHeaderFooterDivider = isDrawHeaderFooterDivider;
+    }
+
+    public DividerLinearItemDecoration(int mOrientation, Drawable mDivider, boolean isDrawHeaderDivider, boolean isDrawFooterDivider) {
+        this.mOrientation = mOrientation;
+        this.mDivider = mDivider;
+        this.isDrawHeaderDivider = isDrawHeaderDivider;
+        this.isDrawFooterDivider = isDrawFooterDivider;
     }
 
     public void setOrientation(int orientation) {
@@ -57,13 +65,15 @@ public class DividerLinearItemDecoration extends RecyclerView.ItemDecoration {
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         if (mOrientation == ORIENTATION_VERTICAL) {
 
-            if(!isDrawHeaderFooterDivider) {
+            if(!isDrawHeaderDivider || !isDrawFooterDivider) {
                 HeaderFooterAdapter adapter = parent.getAdapter() instanceof HeaderFooterAdapter ? (HeaderFooterAdapter)parent.getAdapter() : null;
                 if(null != adapter){
                     int adapterPosition = parent.getChildAdapterPosition(view);
-                    if(null != adapter && !adapter.isAdapterData(adapterPosition)){
+                    int rPosition       = adapter.getRealPosition(adapterPosition);
+                    Log.v(TAG,"\n getItemOffsets adapterPosition "+ adapterPosition + " rPosition "+rPosition);
+                    if(rPosition == -1 && !isDrawHeaderDivider || rPosition == -2 && !isDrawFooterDivider){
                         outRect.set(0, 0, 0, 0);
-                        return;
+                        return ;
                     }
                 }
             }
@@ -85,10 +95,12 @@ public class DividerLinearItemDecoration extends RecyclerView.ItemDecoration {
         for (int i = 0; i < childCount; i++) {
             final View child = parent.getChildAt(i);
 
-            if(!isDrawHeaderFooterDivider) {
+            if(!isDrawHeaderDivider || !isDrawFooterDivider) {
                 if(null != adapter){
                     int adapterPosition = parent.getChildAdapterPosition(child);
-                    if(null != adapter && !adapter.isAdapterData(adapterPosition)){
+                    int rPosition       = adapter.getRealPosition(adapterPosition);
+                    Log.v(TAG,"\n drawVertical adapterPosition "+ adapterPosition + " rPosition "+rPosition);
+                    if(rPosition == -1 && !isDrawHeaderDivider || rPosition == -2 && !isDrawFooterDivider){
                         continue;
                     }
                 }
@@ -113,10 +125,12 @@ public class DividerLinearItemDecoration extends RecyclerView.ItemDecoration {
         for (int i = 0; i < childCount; i++) {
             final View child = parent.getChildAt(i);
 
-            if(!isDrawHeaderFooterDivider) {
+            if(!isDrawHeaderDivider || !isDrawFooterDivider) {
                 if(null != adapter){
                     int adapterPosition = parent.getChildAdapterPosition(child);
-                    if(null != adapter && !adapter.isAdapterData(adapterPosition)){
+                    int rPosition       = adapter.getRealPosition(adapterPosition);
+                    Log.v(TAG,"\n drawHorizontal adapterPosition "+ adapterPosition + " rPosition "+rPosition);
+                    if(rPosition == -1 && !isDrawHeaderDivider || rPosition == -2 && !isDrawFooterDivider){
                         continue;
                     }
                 }

@@ -18,7 +18,8 @@ public abstract class BaseRecyclerAdapter extends RecyclerView.Adapter {
     public final void notifyItemChanged(IRecyclerView recyclerView, int position) {
         int rPosition = getRealPosition(recyclerView,position);
         Log.v(TAG,"position "+ position + " rPosition "+rPosition);
-        if(rPosition == -1){
+        if(rPosition == -1 || rPosition == -2){
+            super.notifyDataSetChanged();
             return ;
         }
         super.notifyItemRangeChanged(rPosition, 1);
@@ -27,7 +28,8 @@ public abstract class BaseRecyclerAdapter extends RecyclerView.Adapter {
     public final void notifyItemChanged(IRecyclerView recyclerView, int position, Object payload) {
         int rPosition = getRealPosition(recyclerView,position);
         Log.v(TAG,"position "+ position + " rPosition "+rPosition);
-        if(rPosition == -1){
+        if(rPosition == -1 || rPosition == -2){
+            super.notifyDataSetChanged();
             return ;
         }
         super.notifyItemRangeChanged(rPosition, 1, payload);
@@ -36,7 +38,8 @@ public abstract class BaseRecyclerAdapter extends RecyclerView.Adapter {
     public final void notifyItemRangeChanged(IRecyclerView recyclerView, int positionStart, int itemCount) {
         int rPosition = getRealPosition(recyclerView,positionStart);
         Log.v(TAG,"positionStart "+ positionStart + " rPosition "+rPosition);
-        if(rPosition == -1){
+        if(rPosition == -1 || rPosition == -2){
+            super.notifyDataSetChanged();
             return ;
         }
         super.notifyItemRangeChanged(rPosition, itemCount);
@@ -45,7 +48,8 @@ public abstract class BaseRecyclerAdapter extends RecyclerView.Adapter {
     public final void notifyItemRangeChanged(IRecyclerView recyclerView, int positionStart, int itemCount, Object payload) {
         int rPosition = getRealPosition(recyclerView,positionStart);
         Log.v(TAG,"positionStart "+ positionStart + " rPosition "+rPosition);
-        if(rPosition == -1){
+        if(rPosition == -1 || rPosition == -2){
+            super.notifyDataSetChanged();
             return ;
         }
         super.notifyItemRangeChanged(rPosition, itemCount, payload);
@@ -54,7 +58,8 @@ public abstract class BaseRecyclerAdapter extends RecyclerView.Adapter {
     public final void notifyItemInserted(IRecyclerView recyclerView, int position) {
         int rPosition = getRealPosition(recyclerView,position);
         Log.v(TAG,"positionStart "+ position + " rPosition "+rPosition);
-        if(rPosition == -1){
+        if(rPosition == -1 || rPosition == -2){
+            super.notifyDataSetChanged();
             return ;
         }
         super.notifyItemRangeInserted(rPosition, 1);
@@ -63,13 +68,15 @@ public abstract class BaseRecyclerAdapter extends RecyclerView.Adapter {
     public final void notifyItemMoved(IRecyclerView recyclerView, int fromPosition, int toPosition) {
         int rPosition = getRealPosition(recyclerView,fromPosition);
         Log.v(TAG,"positionStart "+ fromPosition + " rPosition "+rPosition);
-        if(rPosition == -1){
+        if(rPosition == -1 || rPosition == -2){
+            super.notifyDataSetChanged();
             return ;
         }
 
         int rPosition2 = getRealPosition(recyclerView,toPosition);
         Log.v(TAG,"toPosition "+ toPosition + " rPosition "+rPosition);
-        if(rPosition2 == -1){
+        if(rPosition2 == -1 || rPosition2 == -2){
+            super.notifyDataSetChanged();
             return ;
         }
         super.notifyItemMoved(rPosition, rPosition2);
@@ -78,7 +85,8 @@ public abstract class BaseRecyclerAdapter extends RecyclerView.Adapter {
     public final void notifyItemRangeInserted(IRecyclerView recyclerView, int positionStart, int itemCount) {
         int rPosition = getRealPosition(recyclerView,positionStart);
         Log.v(TAG,"positionStart "+ positionStart + " rPosition "+rPosition);
-        if(rPosition == -1){
+        if(rPosition == -1 || rPosition == -2){
+            super.notifyDataSetChanged();
             return ;
         }
         super.notifyItemRangeInserted(rPosition, itemCount);
@@ -87,7 +95,8 @@ public abstract class BaseRecyclerAdapter extends RecyclerView.Adapter {
     public final void notifyItemRemoved(IRecyclerView recyclerView, int position) {
         int rPosition = getRealPosition(recyclerView,position);
         Log.v(TAG,"position "+ position + " rPosition "+rPosition);
-        if(rPosition == -1){
+        if(rPosition == -1 || rPosition == -2){
+            super.notifyDataSetChanged();
             return ;
         }
         super.notifyItemRangeRemoved(rPosition, 1);
@@ -96,7 +105,8 @@ public abstract class BaseRecyclerAdapter extends RecyclerView.Adapter {
     public final void notifyItemRangeRemoved(IRecyclerView recyclerView, int positionStart, int itemCount) {
         int rPosition = getRealPosition(recyclerView,positionStart);
         Log.v(TAG,"positionStart "+ positionStart + " rPosition "+rPosition);
-        if(rPosition == -1){
+        if(rPosition == -1 || rPosition == -2){
+            super.notifyDataSetChanged();
             return ;
         }
         super.notifyItemRangeRemoved(rPosition, itemCount);
@@ -105,18 +115,7 @@ public abstract class BaseRecyclerAdapter extends RecyclerView.Adapter {
     public final int getRealPosition(IRecyclerView recyclerView , int position){
 
         if (recyclerView.getAdapter() instanceof HeaderFooterAdapter) {
-
-            // Header (negative positions will throw an IndexOutOfBoundsException)
-            int numHeaders = recyclerView.getHeaderViewsCount();
-
-            final int adjPosition = position + numHeaders;
-            int adapterCount = (recyclerView.getAdapter()).getItemCount();
-            if (adjPosition < adapterCount) {
-                return adjPosition;
-            }
-
-            // Footer (off-limits positions will throw an IndexOutOfBoundsException)
-            return -1;
+            return ((HeaderFooterAdapter)recyclerView.getAdapter()).getRealPosition(position);
         }else{
             return position;
         }

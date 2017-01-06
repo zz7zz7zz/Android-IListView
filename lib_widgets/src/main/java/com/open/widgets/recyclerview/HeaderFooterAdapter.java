@@ -74,25 +74,22 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
         return mFooterViewInfos.size();
     }
 
-    public boolean isAdapterData(int position) {
+    public final int getRealPosition(int position){
+
         // Header (negative positions will throw an IndexOutOfBoundsException)
         int numHeaders = getHeadersCount();
         if (position < numHeaders) {
-            return false;
+            return -1;
         }
 
-        // Adapter
         final int adjPosition = position - numHeaders;
-        int adapterCount = 0;
-        if (mAdapter != null) {
-            adapterCount = mAdapter.getItemCount();
-            if (adjPosition < adapterCount) {
-                return true;
-            }
+        int adapterCount = mAdapter.getItemCount();
+        if (adjPosition < adapterCount) {
+            return adjPosition;
         }
 
         // Footer (off-limits positions will throw an IndexOutOfBoundsException)
-        return false;
+        return -2;
     }
 
     //-------------------------------------------------------------------------------
@@ -131,9 +128,8 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
 
         // Adapter
         final int adjPosition = position - numHeaders;
-        int adapterCount = 0;
         if (mAdapter != null) {
-            adapterCount = mAdapter.getItemCount();
+            int adapterCount = mAdapter.getItemCount();
             if (adjPosition < adapterCount) {
                 mAdapter.onBindViewHolder(holder,adjPosition);
                 return ;
@@ -153,11 +149,6 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
             itemCount = getFootersCount() + getHeadersCount();
         }
         return itemCount;
-    }
-
-    int getRealItemCount()
-    {
-        return null != mAdapter ? mAdapter.getItemCount() : 0;
     }
 
     @Override

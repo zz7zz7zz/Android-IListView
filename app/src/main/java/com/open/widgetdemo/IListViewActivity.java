@@ -19,6 +19,8 @@ import java.util.ArrayList;
 
 public class IListViewActivity extends Activity implements IListView.IPullEventListener{
 
+    private static final int PER_PAGE_SIZE = 10;
+
     //-------------UI-------------
     private IListView listView;
     private TextView  listView_size;
@@ -29,6 +31,7 @@ public class IListViewActivity extends Activity implements IListView.IPullEventL
     private ArrayList<String> bindDataList;
     private IAdapter mIAdapter;
 
+    private int pulldown_count = 0;
     private int min_index = 0;//最小索引
     private int max_index = 0;//最大索引
 
@@ -70,13 +73,13 @@ public class IListViewActivity extends Activity implements IListView.IPullEventL
         },2000);
     }
 
-    private int pulldown_count = 0;
+
     private Runnable mPullDownCallBack = new Runnable() {
         @Override
         public void run() {
 
-            ArrayList<String> t_bindDataList = new ArrayList<>(10);
-            for (int i = 1;i<=10;i++){
+            ArrayList<String> t_bindDataList = new ArrayList<>(PER_PAGE_SIZE);
+            for (int i = 1;i<=PER_PAGE_SIZE;i++){
                 t_bindDataList.add(0,"Data (" + (min_index-i)+" ) ");
             }
             min_index -= t_bindDataList.size();
@@ -97,8 +100,8 @@ public class IListViewActivity extends Activity implements IListView.IPullEventL
         @Override
         public void run() {
 
-            ArrayList<String> t_bindDataList = new ArrayList<>(10);
-            for (int i = 1;i<=10;i++){
+            ArrayList<String> t_bindDataList = new ArrayList<>(PER_PAGE_SIZE);
+            for (int i = 1;i<=PER_PAGE_SIZE;i++){
                 t_bindDataList.add("Data (" + (max_index+i)+" ) ");
             }
             max_index += t_bindDataList.size();
