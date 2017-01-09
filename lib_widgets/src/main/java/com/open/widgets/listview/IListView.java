@@ -24,7 +24,7 @@ import java.util.HashMap;
  * IListvew
  * Created by long on 2016/12/20.
  */
-public class IListView extends ListView implements IMessagerDispatcher {
+public class IListView extends ListView implements IMessagerDispatcher , IMessageHandler{
 
 	public static final String TAG = "IListView";
 
@@ -748,6 +748,7 @@ public class IListView extends ListView implements IMessagerDispatcher {
 	}
 
 	//-----------------------自定义通信接口--------------------
+	@Override
 	public void sendMessage(int dst, int cmd, Object... args){
 		switch (dst){
 			case DST_HEADER:
@@ -769,8 +770,25 @@ public class IListView extends ListView implements IMessagerDispatcher {
 				break;
 
 			case DST_ILISTVIEW:
+				onHandMessage(cmd,args);
 				break;
 		}
+	}
+
+	@Override
+	public Object onHandMessage(int cmd, Object... args) {
+		switch(cmd){
+
+			case STOP_HEADER:
+				break;
+
+			case STOP_FOOTER:
+				break;
+
+			case STOP_EMPTYER:
+				break;
+		}
+		return null;
 	}
 
 	// 修复monkey崩溃

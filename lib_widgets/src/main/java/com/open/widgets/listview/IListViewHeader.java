@@ -254,6 +254,8 @@ public class IListViewHeader extends LinearLayout implements IHeaderCallBack {
 				header_loading_animview.setVisibility(VISIBLE);
 				header_loading_animview.startAnimation();
 			}
+
+			messagDispatcher.sendMessage(IMessagerDispatcher.DST_ILISTVIEW, IPullCallBacks.IMessageHandler.STOP_HEADER,null);
 		}
 
 		@Override
@@ -347,7 +349,6 @@ public class IListViewHeader extends LinearLayout implements IHeaderCallBack {
 		public void stop(){
 			onStateChanged(STATE_NORMAL);
 			changeStatus(STATUS_STOP);
-
 		}
 
 		@Override

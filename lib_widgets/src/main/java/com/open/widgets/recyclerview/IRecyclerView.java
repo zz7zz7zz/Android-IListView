@@ -32,7 +32,7 @@ import java.util.HashMap;
  * Created by long on 2016/12/29.
  */
 
-public class IRecyclerView extends RecyclerView implements IMessagerDispatcher {
+public class IRecyclerView extends RecyclerView implements IMessagerDispatcher, IMessageHandler{
 
     public IRecyclerView(Context context) {
         this(context, null);
@@ -962,6 +962,7 @@ public class IRecyclerView extends RecyclerView implements IMessagerDispatcher {
     }
 
     //-----------------------自定义通信接口--------------------
+    @Override
     public void sendMessage(int dst, int cmd, Object... args){
         switch (dst){
             case DST_HEADER:
@@ -983,8 +984,14 @@ public class IRecyclerView extends RecyclerView implements IMessagerDispatcher {
                 break;
 
             case DST_ILISTVIEW:
+                onHandMessage(cmd,args);
                 break;
         }
+    }
+
+    @Override
+    public Object onHandMessage(int cmd, Object... args) {
+        return null;
     }
 
     // 修复monkey崩溃

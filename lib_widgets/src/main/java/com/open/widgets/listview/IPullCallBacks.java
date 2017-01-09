@@ -22,6 +22,10 @@ public class IPullCallBacks {
     //处理命令
     public interface IMessageHandler
     {
+        int STOP_HEADER 		= 1;
+        int STOP_FOOTER 		= 2;
+        int STOP_EMPTYER 		= 3;
+
         Object onHandMessage(int cmd, Object... args);
     }
 

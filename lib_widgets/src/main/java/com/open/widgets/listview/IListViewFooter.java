@@ -247,6 +247,8 @@ public class IListViewFooter extends LinearLayout implements IFooterCallBack {
 		public void stop(){
 			setBottomMargin(dstY);
 			changeStatus(STATUS_STOP);
+
+			messagDispatcher.sendMessage(IMessagerDispatcher.DST_ILISTVIEW, IPullCallBacks.IMessageHandler.STOP_FOOTER,null);
 		}
 
 		@Override
