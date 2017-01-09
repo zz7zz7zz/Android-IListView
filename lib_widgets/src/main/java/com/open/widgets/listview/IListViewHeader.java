@@ -255,7 +255,7 @@ public class IListViewHeader extends LinearLayout implements IHeaderCallBack {
 				header_loading_animview.startAnimation();
 			}
 
-			messagDispatcher.sendMessage(IMessagerDispatcher.DST_ILISTVIEW, IPullCallBacks.IMessageHandler.STOP_HEADER,null);
+			messagDispatcher.sendMessage(IMessagerDispatcher.DST_ILISTVIEW, IPullCallBacks.IMessageHandler.STOP_HEADER);
 		}
 
 		@Override
