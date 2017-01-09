@@ -14,8 +14,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.open.widgets.listview.IPullCallBacks.IFooterCallBack;
 import com.open.lib_widgets.R;
+import com.open.widgets.listview.IPullCallBacks.IFooterCallBack;
+import com.open.widgets.listview.IPullCallBacks.IDispatchMessager;
 
 
 /**
@@ -27,6 +28,8 @@ public class IListViewFooter extends LinearLayout implements IFooterCallBack {
 	public static final int CMD_BOTTOM_SET_TEXT 			= 3001;
 	public static final int STATE_NORMAL 					= 11;
 	public static final int STATE_READY 					= 12;
+
+	IDispatchMessager dispatchMessager;
 
 	private Context mContext;
 	private LinearLayout 	footer;
@@ -137,9 +140,10 @@ public class IListViewFooter extends LinearLayout implements IFooterCallBack {
 	//---------------------------------重写一些基本方法----------------------------------------
 
 	@Override
-	public void onFooterInit(Object... args) {
+	public void onFooterInit(IPullCallBacks.IDispatchMessager dispatchMessager, Object... args) {
+		this.dispatchMessager = dispatchMessager;
 		hide();
-		triggerDis = (int)args[0];
+		this.triggerDis = (int)args[0];
 	}
 
 	@Override

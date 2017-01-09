@@ -7,6 +7,13 @@ package com.open.widgets.listview;
 public class IPullCallBacks {
 
     //----------------------------Header/Footer/Emptyer实现类，用于不同View之间进行事件交互----------------------------------
+    //分发命令
+    public interface IDispatchMessager
+    {
+        void sendMessage(int dst, int cmd, Object... args);
+    }
+
+    //处理命令
     public interface IMessageHandler
     {
         Object onHandMessage(int cmd, Object... args);
@@ -14,7 +21,7 @@ public class IPullCallBacks {
 
 
     public interface IHeaderCallBack extends IMessageHandler {
-        void 	onHeaderInit(Object... args);
+        void 	onHeaderInit(IDispatchMessager dispatchMessager,Object... args);
         void 	onHeaderUpdateHeight(int delta);
         boolean onHeaderCanPullDown();
         void    onHeaderLoading();
@@ -25,7 +32,7 @@ public class IPullCallBacks {
 
 
     public interface IFooterCallBack extends IMessageHandler {
-        void 	onFooterInit(Object... args);
+        void 	onFooterInit(IDispatchMessager dispatchMessager,Object... args);
         void 	onFooterUpdateHeight(int delta);
         boolean onFooterCanPullDown();
         void    onFooterLoading();
@@ -38,7 +45,7 @@ public class IPullCallBacks {
     }
 
     public interface IEmptyerCallBack extends IMessageHandler {
-        void 	onEmptyerInit(Object... args);
+        void 	onEmptyerInit(IDispatchMessager dispatchMessager,Object... args);
         void 	onEmptyerStart();
         void 	onEmptyerStop(int listSize);
         void 	onEmptyerRelease();

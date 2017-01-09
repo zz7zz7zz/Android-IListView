@@ -24,7 +24,7 @@ import java.util.HashMap;
  * IListvew
  * Created by long on 2016/12/20.
  */
-public class IListView extends ListView {
+public class IListView extends ListView implements IDispatchMessager {
 
 	public static final String TAG = "IListView";
 
@@ -310,7 +310,7 @@ public class IListView extends ListView {
 				}
 
 				//2. init view
-				mHeaderView.onHeaderInit(pull_trigger_distance_pulldown);
+				mHeaderView.onHeaderInit(this,pull_trigger_distance_pulldown);
 
 				//3. addView
 				addHeaderView((View) mHeaderView);
@@ -361,7 +361,7 @@ public class IListView extends ListView {
 				}
 
 				//2. init view
-				mFooterView.onFooterInit(pull_trigger_distance_pullup);
+				mFooterView.onFooterInit(this,pull_trigger_distance_pullup);
 
 				//3. addView
 				addFooterView((View) mFooterView);
@@ -429,7 +429,7 @@ public class IListView extends ListView {
 				}
 
 				//2. init view
-				mEmptyerView.onEmptyerInit();
+				mEmptyerView.onEmptyerInit(this);
 				((View) mEmptyerView).setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {

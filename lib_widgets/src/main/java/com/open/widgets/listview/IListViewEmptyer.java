@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.open.widgets.listview.IPullCallBacks.IEmptyerCallBack;
+import com.open.widgets.listview.IPullCallBacks.IDispatchMessager;
 import com.open.lib_widgets.R;
 
 
@@ -19,6 +20,8 @@ import com.open.lib_widgets.R;
 public class IListViewEmptyer extends LinearLayout implements IEmptyerCallBack {
 
 	public static final int CMD_EMPTY_SET_TEXT		 	= 4001;// 设置空页面显示的字
+
+	IDispatchMessager dispatchMessager;
 
 	private ILoadingRelativeLayout  emptyer;
 	private TextView				emptyer_result;
@@ -52,10 +55,9 @@ public class IListViewEmptyer extends LinearLayout implements IEmptyerCallBack {
 	}
 
 	//---------------------------------重写一些基本方法----------------------------------------
-
 	@Override
-	public void onEmptyerInit(Object... args) {
-
+	public void onEmptyerInit(IPullCallBacks.IDispatchMessager dispatchMessager, Object... args) {
+		this.dispatchMessager = dispatchMessager;
 	}
 
 	@Override

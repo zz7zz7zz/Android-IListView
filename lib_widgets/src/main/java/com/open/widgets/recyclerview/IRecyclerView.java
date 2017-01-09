@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 
 import com.open.lib_widgets.R;
+import com.open.widgets.listview.IPullCallBacks.IDispatchMessager;
 import com.open.widgets.listview.IPullCallBacks.IEmptyerCallBack;
 import com.open.widgets.listview.IPullCallBacks.IFooterCallBack;
 import com.open.widgets.listview.IPullCallBacks.IHeaderCallBack;
@@ -31,7 +32,7 @@ import java.util.HashMap;
  * Created by long on 2016/12/29.
  */
 
-public class IRecyclerView extends RecyclerView {
+public class IRecyclerView extends RecyclerView implements IDispatchMessager {
 
     public IRecyclerView(Context context) {
         this(context, null);
@@ -504,7 +505,7 @@ public class IRecyclerView extends RecyclerView {
                 }
 
                 //2. init view
-                mHeaderView.onHeaderInit(pull_trigger_distance_pulldown);
+                mHeaderView.onHeaderInit(this,pull_trigger_distance_pulldown);
 
                 //3. addView
                 addHeaderView((View) mHeaderView);
@@ -555,7 +556,7 @@ public class IRecyclerView extends RecyclerView {
                 }
 
                 //2. init view
-                mFooterView.onFooterInit(pull_trigger_distance_pullup);
+                mFooterView.onFooterInit(this,pull_trigger_distance_pullup);
 
                 //3. addView
                 addFooterView((View) mFooterView);
@@ -623,7 +624,7 @@ public class IRecyclerView extends RecyclerView {
                 }
 
                 //2. init view
-                mEmptyerView.onEmptyerInit();
+                mEmptyerView.onEmptyerInit(this);
                 ((View) mEmptyerView).setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
