@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.open.lib_widgets.R;
 import com.open.widgets.listview.IPullCallBacks.IHeaderCallBack;
-import com.open.widgets.listview.IPullCallBacks.IDispatchMessager;
+import com.open.widgets.listview.IPullCallBacks.IMessagerDispatcher;
 
 /**
  * Header in IListvew
@@ -34,7 +34,7 @@ public class IListViewHeader extends LinearLayout implements IHeaderCallBack {
 	public static final int STATE_NORMAL 			= 11;
 	public static final int STATE_READY 			= 12;
 
-	IDispatchMessager dispatchMessager;
+	IMessagerDispatcher dispatchMessager;
 
 	private LinearLayout 				header;
 	private IListViewHeaderLoadingView 	header_loading_animview;
@@ -145,7 +145,7 @@ public class IListViewHeader extends LinearLayout implements IHeaderCallBack {
 	//---------------------------------重写一些基本方法----------------------------------------
 
 	@Override
-	public void onHeaderInit(IPullCallBacks.IDispatchMessager dispatchMessager, Object... args) {
+	public void onHeaderInit(IMessagerDispatcher dispatchMessager, Object... args) {
 		this.dispatchMessager = dispatchMessager;
 		triggerDis = (int)args[0];
 	}

@@ -24,7 +24,7 @@ import java.util.HashMap;
  * IListvew
  * Created by long on 2016/12/20.
  */
-public class IListView extends ListView implements IDispatchMessager {
+public class IListView extends ListView implements IMessagerDispatcher {
 
 	public static final String TAG = "IListView";
 

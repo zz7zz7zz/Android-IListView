@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 
 import com.open.lib_widgets.R;
-import com.open.widgets.listview.IPullCallBacks.IDispatchMessager;
+import com.open.widgets.listview.IPullCallBacks.IMessagerDispatcher;
 import com.open.widgets.listview.IPullCallBacks.IEmptyerCallBack;
 import com.open.widgets.listview.IPullCallBacks.IFooterCallBack;
 import com.open.widgets.listview.IPullCallBacks.IHeaderCallBack;
@@ -32,7 +32,7 @@ import java.util.HashMap;
  * Created by long on 2016/12/29.
  */
 
-public class IRecyclerView extends RecyclerView implements IDispatchMessager {
+public class IRecyclerView extends RecyclerView implements IMessagerDispatcher {
 
     public IRecyclerView(Context context) {
         this(context, null);
