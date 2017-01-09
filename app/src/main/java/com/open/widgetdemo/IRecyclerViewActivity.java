@@ -101,6 +101,12 @@ public class IRecyclerViewActivity extends Activity implements IPullCallBacks.IP
         linear.performClick();
     }
 
+    @Override
+    protected void onDestroy() {
+        mIRecyclerView.release();
+        super.onDestroy();
+    }
+
     private void linearLayout(){
         mLayoutManager      = new LinearLayoutManager(getApplicationContext());
 //        ((LinearLayoutManager)mLayoutManager).setOrientation(LinearLayoutManager.HORIZONTAL);

@@ -53,6 +53,12 @@ public class IListViewActivity extends Activity implements IPullCallBacks.IPullC
     }
 
     @Override
+    protected void onDestroy() {
+        listView.release();
+        super.onDestroy();
+    }
+
+    @Override
     public void onPullDown() {
         //模拟网络回调
         mHandler.postDelayed(new Runnable() {

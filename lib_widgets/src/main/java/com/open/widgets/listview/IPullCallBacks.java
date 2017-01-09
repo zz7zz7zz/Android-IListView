@@ -8,8 +8,14 @@ public class IPullCallBacks {
 
     //----------------------------Header/Footer/Emptyer实现类，用于不同View之间进行事件交互----------------------------------
     //分发命令
+
     public interface IMessagerDispatcher
     {
+        int DST_HEADER 		= 1;
+        int DST_EMPTY  		= 2;
+        int DST_FOOTER 		= 3;
+        int DST_ILISTVIEW 	= 4;
+
         void sendMessage(int dst, int cmd, Object... args);
     }
 

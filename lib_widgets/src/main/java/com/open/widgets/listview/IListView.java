@@ -748,11 +748,6 @@ public class IListView extends ListView implements IMessagerDispatcher {
 	}
 
 	//-----------------------自定义通信接口--------------------
-	public static final int DST_HEADER 		= 1;
-	public static final int DST_EMPTY  		= 2;
-	public static final int DST_FOOTER 		= 3;
-	public static final int DST_ILISTVIEW 	= 4;
-
 	public void sendMessage(int dst, int cmd, Object... args){
 		switch (dst){
 			case DST_HEADER:
