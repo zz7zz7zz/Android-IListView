@@ -12,12 +12,13 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.open.widgets.R;
+import com.open.widgets.listview.IPullCallBacks;
 import com.open.widgets.listview.IListView;
 import com.open.widgets.listview.IListViewHeader;
 
 import java.util.ArrayList;
 
-public class IListViewActivity extends Activity implements IListView.IPullEventListener{
+public class IListViewActivity extends Activity implements IPullCallBacks.IPullCallBackListener{
 
     private static final int PER_PAGE_SIZE = 10;
 
@@ -46,7 +47,7 @@ public class IListViewActivity extends Activity implements IListView.IPullEventL
         listView        = (IListView)findViewById(R.id.listView);
         listView_size   = (TextView) findViewById(R.id.listView_size);
 
-        listView.setPullEventListener(this);
+        listView.setPullCallBackListener(this);
         listView.setAdapter(mIAdapter);
         listView.startPullDownLoading();
     }

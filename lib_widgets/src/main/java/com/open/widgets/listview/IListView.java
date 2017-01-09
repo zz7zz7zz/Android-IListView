@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
-import com.open.widgets.listview.ICallBacks.*;
+import com.open.widgets.listview.IPullCallBacks.*;
 import com.open.lib_widgets.R;
 
 import java.lang.reflect.Constructor;
@@ -65,7 +65,7 @@ public class IListView extends ListView {
 	private int   mDataSetSize= 0;  //真实数据大小
 	private boolean isPullDownLoading = false;
 	private boolean isPullUpLoading   = false;
-	private IPullEventListener mPullEventListener = null;
+	private IPullCallBackListener mPullCallBackListener = null;
 	private OnScrollListener subOnScrollListener=null;
 	private int mTotalItemCount;
 
@@ -128,8 +128,8 @@ public class IListView extends ListView {
 		super.setOnScrollListener(mProxyScrollListener);
 	}
 
-	public void setPullEventListener(IPullEventListener mIPullEvent) {
-		this.mPullEventListener = mIPullEvent;
+	public void setPullCallBackListener(IPullCallBackListener listener) {
+		this.mPullCallBackListener = listener;
 	}
 
 	private int oldScrollState;
@@ -433,7 +433,7 @@ public class IListView extends ListView {
 				((View) mEmptyerView).setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						if(null != mPullEventListener)
+						if(null != mPullCallBackListener)
 						{
 							startPullDownLoading();
 						}
@@ -545,9 +545,9 @@ public class IListView extends ListView {
 				mFooterView.onFooterLoading();
 			}
 
-			if(null != mPullEventListener) {
+			if(null != mPullCallBackListener) {
 				latest_pullup_time = System.currentTimeMillis();
-				mPullEventListener.onPullUp();
+				mPullCallBackListener.onPullUp();
 			}
 
 			resetFooterHeight(isPullUpLoading);
@@ -658,9 +658,9 @@ public class IListView extends ListView {
 				}
 			}
 
-			if(null != mPullEventListener) {
+			if(null != mPullCallBackListener) {
 				latest_pulldown_time = System.currentTimeMillis();
-				mPullEventListener.onPullDown();
+				mPullCallBackListener.onPullDown();
 			}
 		}
 	}
@@ -730,7 +730,7 @@ public class IListView extends ListView {
 
 	//------------------------E: 重写父类相关方法------------------------------
 	public void release(){
-		setPullEventListener(null);
+		setPullCallBackListener(null);
 		setOnScrollListener(null);
 		removeCallbacks(mPullDownStartRunnable);
 		removeCallbacks(mPullDownStopRunnable);
@@ -786,21 +786,4 @@ public class IListView extends ListView {
 			return false;
 		}
 	}
-
-
-	//----------------------------下拉/上拉事件的监听器----------------------------------
-	public interface IPullEventListener {
-
-		/**
-		 * 触发下拉事件
-		 */
-		void onPullDown();
-
-		/**
-		 * 触发上拉事件
-		 */
-		void onPullUp();
-
-	}
-
 }

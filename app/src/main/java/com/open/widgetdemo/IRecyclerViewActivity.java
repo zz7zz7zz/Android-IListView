@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.open.widgets.R;
+import com.open.widgets.listview.IPullCallBacks;
 import com.open.widgets.listview.IListView;
 import com.open.widgets.listview.IListViewHeader;
 import com.open.widgets.recyclerview.BaseRecyclerAdapter;
@@ -26,7 +27,7 @@ import com.open.widgets.recyclerview.IRecyclerView;
 
 import java.util.ArrayList;
 
-public class IRecyclerViewActivity extends Activity implements IListView.IPullEventListener{
+public class IRecyclerViewActivity extends Activity implements IPullCallBacks.IPullCallBackListener{
 
     private static final int PER_PAGE_SIZE = 10;
 
@@ -115,7 +116,7 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
         mIRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mIRecyclerView.setAdapter(mIAdapter);
 
-        mIRecyclerView.setPullEventListener(this);
+        mIRecyclerView.setPullCallBackListener(this);
         mIRecyclerView.startPullDownLoading();
     }
 
@@ -132,7 +133,7 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
         mIRecyclerView.setAdapter(mIAdapter);
 
 
-        mIRecyclerView.setPullEventListener(this);
+        mIRecyclerView.setPullCallBackListener(this);
         mIRecyclerView.startPullDownLoading();
     }
 
@@ -148,7 +149,7 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
         mIRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mIRecyclerView.setAdapter(mIAdapter);
 
-        mIRecyclerView.setPullEventListener(this);
+        mIRecyclerView.setPullCallBackListener(this);
         mIRecyclerView.startPullDownLoading();
     }
 

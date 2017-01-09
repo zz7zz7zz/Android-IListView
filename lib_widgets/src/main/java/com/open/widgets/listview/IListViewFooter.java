@@ -14,7 +14,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.open.widgets.listview.ICallBacks.IFooterCallBack;
+import com.open.widgets.listview.IPullCallBacks.IFooterCallBack;
 import com.open.lib_widgets.R;
 
 

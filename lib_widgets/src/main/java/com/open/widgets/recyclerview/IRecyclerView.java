@@ -18,8 +18,11 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 
 import com.open.lib_widgets.R;
-import com.open.widgets.listview.IListView;
-import com.open.widgets.listview.ICallBacks.*;
+import com.open.widgets.listview.IPullCallBacks.IEmptyerCallBack;
+import com.open.widgets.listview.IPullCallBacks.IFooterCallBack;
+import com.open.widgets.listview.IPullCallBacks.IHeaderCallBack;
+import com.open.widgets.listview.IPullCallBacks.IMessageHandler;
+import com.open.widgets.listview.IPullCallBacks.IPullCallBackListener;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
@@ -242,7 +245,7 @@ public class IRecyclerView extends RecyclerView {
     private int   mDataSetSize= 0;  //真实数据大小
     private boolean isPullDownLoading = false;
     private boolean isPullUpLoading   = false;
-    private IListView.IPullEventListener mPullEventListener = null;
+    private IPullCallBackListener mPullCallBackListener = null;
     private int mTotalItemCount;
 
     //头部UI
@@ -358,8 +361,8 @@ public class IRecyclerView extends RecyclerView {
         });
     }
 
-    public void setPullEventListener(IListView.IPullEventListener mIPullEvent) {
-        this.mPullEventListener = mIPullEvent;
+    public void setPullCallBackListener(IPullCallBackListener listener) {
+        this.mPullCallBackListener = listener;
     }
 
     @Override
@@ -624,7 +627,7 @@ public class IRecyclerView extends RecyclerView {
                 ((View) mEmptyerView).setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(null != mPullEventListener)
+                        if(null != mPullCallBackListener)
                         {
                             startPullDownLoading();
                         }
@@ -736,9 +739,9 @@ public class IRecyclerView extends RecyclerView {
                 mFooterView.onFooterLoading();
             }
 
-            if(null != mPullEventListener) {
+            if(null != mPullCallBackListener) {
                 latest_pullup_time = System.currentTimeMillis();
-                mPullEventListener.onPullUp();
+                mPullCallBackListener.onPullUp();
             }
 
             resetFooterHeight(isPullUpLoading);
@@ -849,9 +852,9 @@ public class IRecyclerView extends RecyclerView {
                 }
             }
 
-            if(null != mPullEventListener) {
+            if(null != mPullCallBackListener) {
                 latest_pulldown_time = System.currentTimeMillis();
-                mPullEventListener.onPullDown();
+                mPullCallBackListener.onPullDown();
             }
         }
     }
@@ -996,20 +999,5 @@ public class IRecyclerView extends RecyclerView {
         }catch (Exception e){
             return false;
         }
-    }
-
-    //----------------------------下拉/上拉事件的监听器----------------------------------
-    public interface IPullEventListener {
-
-        /**
-         * 触发下拉事件
-         */
-        void onPullDown();
-
-        /**
-         * 触发上拉事件
-         */
-        void onPullUp();
-
     }
 }

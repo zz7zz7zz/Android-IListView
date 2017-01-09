@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.open.widgets.listview.ICallBacks.IEmptyerCallBack;
+import com.open.widgets.listview.IPullCallBacks.IEmptyerCallBack;
 import com.open.lib_widgets.R;
 
 

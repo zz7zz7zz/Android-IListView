@@ -4,7 +4,7 @@ package com.open.widgets.listview;
  * Created by long on 2017/1/9.
  */
 
-public class ICallBacks {
+public class IPullCallBacks {
 
     //----------------------------Header/Footer/Emptyer实现类，用于不同View之间进行事件交互----------------------------------
     public interface IMessageHandler
@@ -42,5 +42,21 @@ public class ICallBacks {
         void 	onEmptyerStart();
         void 	onEmptyerStop(int listSize);
         void 	onEmptyerRelease();
+    }
+
+
+    //----------------------------下拉/上拉事件的监听器----------------------------------
+    public interface IPullCallBackListener {
+
+        /**
+         * 触发下拉事件
+         */
+        void onPullDown();
+
+        /**
+         * 触发上拉事件
+         */
+        void onPullUp();
+
     }
 }
