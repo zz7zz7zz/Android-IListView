@@ -18,6 +18,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.open.widgets.listview.ICallBacks.IHeaderCallBack;
 import com.open.lib_widgets.R;
 
 
@@ -25,7 +26,7 @@ import com.open.lib_widgets.R;
  * Header in IListvew
  * Created by long on 2016/12/20.
  */
-public class IListViewHeader extends LinearLayout implements IListView.IHeaderCallBack {
+public class IListViewHeader extends LinearLayout implements IHeaderCallBack {
 
 	public static final String TAG = "IListViewHeader";
 

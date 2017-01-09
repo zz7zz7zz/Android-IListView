@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
+import com.open.widgets.listview.ICallBacks.*;
 import com.open.lib_widgets.R;
 
 import java.lang.reflect.Constructor;
@@ -784,45 +785,6 @@ public class IListView extends ListView {
 		}catch (Exception e){
 			return false;
 		}
-	}
-
-
-	//----------------------------Header/Footer/Emptyer实现类，用于不同View之间进行事件交互----------------------------------
-	public interface IMessageHandler
-	{
-		Object onHandMessage(int cmd, Object... args);
-	}
-
-
-	public interface IHeaderCallBack extends IMessageHandler {
-		void 	onHeaderInit(Object... args);
-		void 	onHeaderUpdateHeight(int delta);
-		boolean onHeaderCanPullDown();
-		void    onHeaderLoading();
-		void 	onHeaderReset(boolean isPullDownLoadingNextMoment);
-		long 	onHeaderStop();
-		void 	onHeaderRelease();
-	}
-
-
-	public interface IFooterCallBack extends IMessageHandler {
-		void 	onFooterInit(Object... args);
-		void 	onFooterUpdateHeight(int delta);
-		boolean onFooterCanPullDown();
-		void    onFooterLoading();
-		void 	onFooterReset(boolean isPullDownLoadingNextMoment);
-		long 	onFooterStop();
-		void 	onFooterShow();
-		void 	onFooterHidden();
-		int 	onFooterGetMargin();
-		void 	onFooterRelease();
-	}
-
-	public interface IEmptyerCallBack extends IMessageHandler {
-		void 	onEmptyerInit(Object... args);
-		void 	onEmptyerStart();
-		void 	onEmptyerStop(int listSize);
-		void 	onEmptyerRelease();
 	}
 
 

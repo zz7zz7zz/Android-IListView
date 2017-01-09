@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.open.widgets.listview.ICallBacks.IEmptyerCallBack;
 import com.open.lib_widgets.R;
 
 
@@ -15,7 +16,7 @@ import com.open.lib_widgets.R;
  * Emptyer in IListvew
  * Created by long on 2016/12/20.
  */
-public class IListViewEmptyer extends LinearLayout implements IListView.IEmptyerCallBack {
+public class IListViewEmptyer extends LinearLayout implements IEmptyerCallBack {
 
 	public static final int CMD_EMPTY_SET_TEXT		 	= 4001;// 设置空页面显示的字
 

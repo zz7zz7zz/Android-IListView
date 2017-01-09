@@ -19,6 +19,7 @@ import android.widget.AbsListView;
 
 import com.open.lib_widgets.R;
 import com.open.widgets.listview.IListView;
+import com.open.widgets.listview.ICallBacks.*;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
@@ -245,9 +246,9 @@ public class IRecyclerView extends RecyclerView {
     private int mTotalItemCount;
 
     //头部UI
-    private IListView.IHeaderCallBack mHeaderView;
-    private IListView.IFooterCallBack mFooterView;
-    private IListView.IEmptyerCallBack mEmptyerView;
+    private IHeaderCallBack mHeaderView;
+    private IFooterCallBack mFooterView;
+    private IEmptyerCallBack mEmptyerView;
     private boolean isEmptyViewAdded = false;
 
     @Override
@@ -492,7 +493,7 @@ public class IRecyclerView extends RecyclerView {
                 }
 
                 Object[] args = {getContext()};
-                mHeaderView = (IListView.IHeaderCallBack) constructor.newInstance(args);
+                mHeaderView = (IHeaderCallBack) constructor.newInstance(args);
 
                 if(!(mHeaderView instanceof View))
                 {
@@ -543,7 +544,7 @@ public class IRecyclerView extends RecyclerView {
                 }
 
                 Object[] args = {getContext()};
-                mFooterView = (IListView.IFooterCallBack) constructor.newInstance(args);
+                mFooterView = (IFooterCallBack) constructor.newInstance(args);
 
                 if(!(mFooterView instanceof View))
                 {
@@ -608,7 +609,7 @@ public class IRecyclerView extends RecyclerView {
 
                 Object[] args = {getContext()};
                 try {
-                    mEmptyerView = (IListView.IEmptyerCallBack)constructor.newInstance(args);
+                    mEmptyerView = (IEmptyerCallBack)constructor.newInstance(args);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -920,7 +921,7 @@ public class IRecyclerView extends RecyclerView {
                         int allChildHeight=0;
                         for (int i = 0; i < getChildCount(); i++) {
                             View childView = getChildAt(i);
-                            if(null !=childView && !(childView instanceof IListView.IMessageHandler)){
+                            if(null !=childView && !(childView instanceof IMessageHandler)){
                                 allChildHeight += childView.getMeasuredHeight();
                             }
                         }
@@ -997,46 +998,6 @@ public class IRecyclerView extends RecyclerView {
         }
     }
 
-
-    //----------------------------Header/Footer/Emptyer实现类，用于不同View之间进行事件交互----------------------------------
-    public interface IMessageHandler
-    {
-        Object onHandMessage(int cmd, Object... args);
-    }
-
-
-    public interface IHeaderCallBack extends IListView.IMessageHandler {
-        void 	onHeaderInit(Object... args);
-        void 	onHeaderUpdateHeight(int delta);
-        boolean onHeaderCanPullDown();
-        void    onHeaderLoading();
-        void 	onHeaderReset(boolean isPullDownLoadingNextMoment);
-        long 	onHeaderStop();
-        void 	onHeaderRelease();
-    }
-
-
-    public interface IFooterCallBack extends IListView.IMessageHandler {
-        void 	onFooterInit(Object... args);
-        void 	onFooterUpdateHeight(int delta);
-        boolean onFooterCanPullDown();
-        void    onFooterLoading();
-        void 	onFooterReset(boolean isPullDownLoadingNextMoment);
-        long 	onFooterStop();
-        void 	onFooterShow();
-        void 	onFooterHidden();
-        int 	onFooterGetMargin();
-        void 	onFooterRelease();
-    }
-
-    public interface IEmptyerCallBack extends IListView.IMessageHandler {
-        void 	onEmptyerInit(Object... args);
-        void 	onEmptyerStart();
-        void 	onEmptyerStop(int listSize);
-        void 	onEmptyerRelease();
-    }
-
-
     //----------------------------下拉/上拉事件的监听器----------------------------------
     public interface IPullEventListener {
 
@@ -1051,7 +1012,4 @@ public class IRecyclerView extends RecyclerView {
         void onPullUp();
 
     }
-
-
-
 }

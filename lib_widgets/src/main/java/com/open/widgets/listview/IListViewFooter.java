@@ -14,6 +14,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.open.widgets.listview.ICallBacks.IFooterCallBack;
 import com.open.lib_widgets.R;
 
 
@@ -21,7 +22,7 @@ import com.open.lib_widgets.R;
  * Footer in IListvew
  * Created by long on 2016/12/20.
  */
-public class IListViewFooter extends LinearLayout implements IListView.IFooterCallBack {
+public class IListViewFooter extends LinearLayout implements IFooterCallBack {
 
 	public static final int CMD_BOTTOM_SET_TEXT 			= 3001;
 	public static final int STATE_NORMAL 					= 11;
