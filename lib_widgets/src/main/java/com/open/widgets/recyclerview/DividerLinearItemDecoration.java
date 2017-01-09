@@ -21,11 +21,10 @@ public class DividerLinearItemDecoration extends RecyclerView.ItemDecoration {
     private int mOrientation;
     private Drawable mDivider;
     private boolean isDrawHeaderDivider = false;
-    private boolean isDrawFooterDivider = true;
+    private boolean isDrawFooterDivider = false;
 
     public DividerLinearItemDecoration(int mOrientation, Drawable mDivider) {
-        this.mOrientation = mOrientation;
-        this.mDivider = mDivider;
+        this(mOrientation,mDivider,false,false);
     }
 
     public DividerLinearItemDecoration(int mOrientation, Drawable mDivider, boolean isDrawHeaderDivider, boolean isDrawFooterDivider) {
@@ -106,6 +105,10 @@ public class DividerLinearItemDecoration extends RecyclerView.ItemDecoration {
                 }
             }
 
+            if(child.getMeasuredHeight() == 0){
+                continue;
+            }
+
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
             final int top = child.getBottom() + params.bottomMargin;
             final int bottom = top + mDivider.getIntrinsicHeight();
@@ -134,6 +137,10 @@ public class DividerLinearItemDecoration extends RecyclerView.ItemDecoration {
                         continue;
                     }
                 }
+            }
+
+            if(child.getMeasuredWidth() == 0){
+                continue;
             }
 
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
