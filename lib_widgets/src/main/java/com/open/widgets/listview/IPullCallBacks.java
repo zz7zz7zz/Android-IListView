@@ -21,7 +21,7 @@ public class IPullCallBacks {
 
 
     public interface IHeaderCallBack extends IMessageHandler {
-        void 	onHeaderInit(IMessagerDispatcher dispatchMessager, Object... args);
+        void 	onHeaderInit(IMessagerDispatcher messagDispatcher, Object... args);
         void 	onHeaderUpdateHeight(int delta);
         boolean onHeaderCanPullDown();
         void    onHeaderLoading();
@@ -32,7 +32,7 @@ public class IPullCallBacks {
 
 
     public interface IFooterCallBack extends IMessageHandler {
-        void 	onFooterInit(IMessagerDispatcher dispatchMessager, Object... args);
+        void 	onFooterInit(IMessagerDispatcher messagDispatcher, Object... args);
         void 	onFooterUpdateHeight(int delta);
         boolean onFooterCanPullDown();
         void    onFooterLoading();
@@ -45,7 +45,7 @@ public class IPullCallBacks {
     }
 
     public interface IEmptyerCallBack extends IMessageHandler {
-        void 	onEmptyerInit(IMessagerDispatcher dispatchMessager, Object... args);
+        void 	onEmptyerInit(IMessagerDispatcher messagDispatcher, Object... args);
         void 	onEmptyerStart();
         void 	onEmptyerStop(int listSize);
         void 	onEmptyerRelease();

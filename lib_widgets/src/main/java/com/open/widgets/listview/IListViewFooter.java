@@ -29,7 +29,7 @@ public class IListViewFooter extends LinearLayout implements IFooterCallBack {
 	public static final int STATE_NORMAL 					= 11;
 	public static final int STATE_READY 					= 12;
 
-	IMessagerDispatcher dispatchMessager;
+	IMessagerDispatcher messagDispatcher;
 
 	private Context mContext;
 	private LinearLayout 	footer;
@@ -140,8 +140,8 @@ public class IListViewFooter extends LinearLayout implements IFooterCallBack {
 	//---------------------------------重写一些基本方法----------------------------------------
 
 	@Override
-	public void onFooterInit(IMessagerDispatcher dispatchMessager, Object... args) {
-		this.dispatchMessager = dispatchMessager;
+	public void onFooterInit(IMessagerDispatcher messagDispatcher, Object... args) {
+		this.messagDispatcher = messagDispatcher;
 		hide();
 		this.triggerDis = (int)args[0];
 	}

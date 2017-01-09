@@ -21,7 +21,7 @@ public class IListViewEmptyer extends LinearLayout implements IEmptyerCallBack {
 
 	public static final int CMD_EMPTY_SET_TEXT		 	= 4001;// 设置空页面显示的字
 
-	IMessagerDispatcher dispatchMessager;
+	IMessagerDispatcher messagDispatcher;
 
 	private ILoadingRelativeLayout  emptyer;
 	private TextView				emptyer_result;
@@ -56,8 +56,8 @@ public class IListViewEmptyer extends LinearLayout implements IEmptyerCallBack {
 
 	//---------------------------------重写一些基本方法----------------------------------------
 	@Override
-	public void onEmptyerInit(IMessagerDispatcher dispatchMessager, Object... args) {
-		this.dispatchMessager = dispatchMessager;
+	public void onEmptyerInit(IMessagerDispatcher messagDispatcher, Object... args) {
+		this.messagDispatcher = messagDispatcher;
 	}
 
 	@Override

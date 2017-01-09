@@ -34,7 +34,7 @@ public class IListViewHeader extends LinearLayout implements IHeaderCallBack {
 	public static final int STATE_NORMAL 			= 11;
 	public static final int STATE_READY 			= 12;
 
-	IMessagerDispatcher dispatchMessager;
+	IMessagerDispatcher messagDispatcher;
 
 	private LinearLayout 				header;
 	private IListViewHeaderLoadingView 	header_loading_animview;
@@ -145,8 +145,8 @@ public class IListViewHeader extends LinearLayout implements IHeaderCallBack {
 	//---------------------------------重写一些基本方法----------------------------------------
 
 	@Override
-	public void onHeaderInit(IMessagerDispatcher dispatchMessager, Object... args) {
-		this.dispatchMessager = dispatchMessager;
+	public void onHeaderInit(IMessagerDispatcher messagDispatcher, Object... args) {
+		this.messagDispatcher = messagDispatcher;
 		triggerDis = (int)args[0];
 	}
 
