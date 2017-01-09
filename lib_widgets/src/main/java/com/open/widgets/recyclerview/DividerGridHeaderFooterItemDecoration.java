@@ -18,10 +18,10 @@ public class DividerGridHeaderFooterItemDecoration extends RecyclerView.ItemDeco
     private static final String TAG  = "DividerGridHeaderFooter";
     private Drawable mDivider;
     private boolean isDrawHeaderDivider = false;
-    private boolean isDrawFooterDivider = true;
+    private boolean isDrawFooterDivider = false;
 
     public DividerGridHeaderFooterItemDecoration(Drawable mDivider) {
-        this.mDivider = mDivider;
+        this(mDivider,false,false);
     }
 
     public DividerGridHeaderFooterItemDecoration(Drawable mDivider, boolean isDrawHeaderDivider, boolean isDrawFooterDivider) {
@@ -84,11 +84,16 @@ public class DividerGridHeaderFooterItemDecoration extends RecyclerView.ItemDeco
                 if(null != adapter){
                     int adapterPosition = parent.getChildAdapterPosition(child);
                     int rPosition = adapter.getRealPosition(adapterPosition);
-                    Log.v(TAG,"drawHorizontal adapterPosition "+ adapterPosition + " rPosition "+rPosition);
+                    Log.v(TAG,"AAA1 drawHorizontal adapterPosition "+ adapterPosition + " rPosition "+rPosition + " getMeasuredWidth "+ child.getMeasuredWidth()+
+                            " getMeasuredHeight "+ child.getMeasuredHeight());
                     if(rPosition == -1 && !isDrawHeaderDivider || rPosition == -2 && !isDrawFooterDivider){
                         continue;
                     }
                 }
+            }
+
+            if(child.getMeasuredWidth() == 0 || child.getMeasuredHeight() == 0){
+                continue;
             }
 
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
@@ -97,7 +102,7 @@ public class DividerGridHeaderFooterItemDecoration extends RecyclerView.ItemDeco
             final int top = child.getBottom() + params.bottomMargin;
             final int bottom = top + mDivider.getIntrinsicHeight();
 
-            Log.v(TAG,"i "+i+" drawHorizontal BBB top "+ top + " bottom "+bottom+ " left "+left+ " right "+right);
+            Log.v(TAG,"AAA2 i "+i+" drawHorizontal BBB top "+ top + " bottom "+bottom+ " left "+left+ " right "+right);
 
             mDivider.setBounds(left, top, right, bottom);
             mDivider.draw(c);
@@ -116,11 +121,16 @@ public class DividerGridHeaderFooterItemDecoration extends RecyclerView.ItemDeco
                 if(null != adapter){
                     int adapterPosition = parent.getChildAdapterPosition(child);
                     int rPosition = adapter.getRealPosition(adapterPosition);
-                    Log.v(TAG,"drawVertical adapterPosition "+ adapterPosition + " rPosition "+rPosition);
+                    Log.v(TAG,"BBB1 drawVertical adapterPosition "+ adapterPosition + " rPosition "+rPosition + " getMeasuredWidth "+ child.getMeasuredWidth()+
+                            " getMeasuredHeight "+ child.getMeasuredHeight());
                     if(rPosition == -1 && !isDrawHeaderDivider || rPosition == -2 && !isDrawFooterDivider){
                         continue;
                     }
                 }
+            }
+
+            if(child.getMeasuredWidth() == 0 || child.getMeasuredHeight() == 0){
+                continue;
             }
 
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
@@ -128,7 +138,7 @@ public class DividerGridHeaderFooterItemDecoration extends RecyclerView.ItemDeco
             final int bottom = child.getBottom() + params.bottomMargin;
             final int left = child.getRight() + params.rightMargin;
             final int right = left + mDivider.getIntrinsicWidth();
-            Log.v(TAG,"i "+i+" drawVertical BBB top "+ top + " bottom "+bottom+ " left "+left+ " right "+right);
+            Log.v(TAG,"BBB2 i "+i+" drawVertical BBB top "+ top + " bottom "+bottom+ " left "+left+ " right "+right);
             mDivider.setBounds(left, top, right, bottom);
             mDivider.draw(c);
         }

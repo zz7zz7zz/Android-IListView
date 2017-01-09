@@ -65,7 +65,13 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
             @Override
             public void onClick(View v) {
 
+                linear.setText("linear");
+                grid.setText("grid");
+                staggeredGrid.setText("staggeredGrid");
 
+                pulldown_count = 0;
+                min_index = 0;
+                max_index = 0;
 
                 switch (v.getId()){
 
@@ -84,14 +90,6 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
                         staggeredGridLayout();
                         break;
                 }
-
-                linear.setText("linear");
-                grid.setText("grid");
-                staggeredGrid.setText("staggeredGrid");
-
-                pulldown_count = 0;
-                min_index = 0;
-                max_index = 0;
             }
         };
 
@@ -104,7 +102,7 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
 
     private void linearLayout(){
         mLayoutManager      = new LinearLayoutManager(getApplicationContext());
-        //((LinearLayoutManager)mLayoutManager).setOrientation(LinearLayoutManager.HORIZONTAL);
+//        ((LinearLayoutManager)mLayoutManager).setOrientation(LinearLayoutManager.HORIZONTAL);
 
         decor = new DividerLinearItemDecoration(mLayoutManager.canScrollVertically() ? DividerLinearItemDecoration.ORIENTATION_VERTICAL : DividerLinearItemDecoration.ORIENTATION_HORIZONTAL,
                 ContextCompat.getDrawable(getApplicationContext(),R.drawable.linear_itemdecoration),false,true);
@@ -122,7 +120,7 @@ public class IRecyclerViewActivity extends Activity implements IListView.IPullEv
     }
 
     private void gridLayout(){
-        mLayoutManager      = new GridLayoutManager(getApplicationContext(), 3);
+        mLayoutManager      = new GridLayoutManager(getApplicationContext(), 2);
         decor = new DividerGridHeaderFooterItemDecoration(ContextCompat.getDrawable(getApplicationContext(),R.drawable.linear_itemdecoration),false,true);
 
         bindDataList    = new ArrayList<>();

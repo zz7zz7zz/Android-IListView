@@ -275,10 +275,7 @@ public class IRecyclerView extends RecyclerView {
 
     public int getFirstVisiblePosition() {
         LayoutManager layout = getLayoutManager();
-        if(layout instanceof LinearLayoutManager){
-            return ((LinearLayoutManager)layout).findFirstVisibleItemPosition();
-        }
-        else if(layout instanceof GridLayoutManager){
+        if(layout instanceof GridLayoutManager){
             return ((GridLayoutManager)layout).findFirstVisibleItemPosition();
         }
         else if(layout instanceof StaggeredGridLayoutManager){
@@ -292,15 +289,16 @@ public class IRecyclerView extends RecyclerView {
             }
             return minPosition;
         }
+        else if(layout instanceof LinearLayoutManager){
+            return ((LinearLayoutManager)layout).findFirstVisibleItemPosition();
+        }
         return 0;
     }
 
     public int getLastVisiblePosition() {
         LayoutManager layout = getLayoutManager();
-        if(layout instanceof LinearLayoutManager){
-            return ((LinearLayoutManager)layout).findLastVisibleItemPosition();
-        }
-        else if(layout instanceof GridLayoutManager){
+
+        if(layout instanceof GridLayoutManager){
             return ((GridLayoutManager)layout).findLastVisibleItemPosition();
         }
         else if(layout instanceof StaggeredGridLayoutManager){
@@ -313,6 +311,9 @@ public class IRecyclerView extends RecyclerView {
                 maxPosition = Math.max(maxPosition, firstVisibleItems[i]);
             }
             return maxPosition;
+        }
+        else if(layout instanceof LinearLayoutManager){
+             return ((LinearLayoutManager)layout).findLastVisibleItemPosition();
         }
         return getLayoutManager().getItemCount() - 1;
     }
@@ -798,7 +799,7 @@ public class IRecyclerView extends RecyclerView {
                     resetHeaderHeight(isPullDownLoading);
                     refreshFooterAndEmptyer();
                 }
-            },ms+10);
+            },ms+100);
             return ms;
         }
         else if(pullType == STATUS_PULL_UP && isPullUpLoading){
@@ -816,7 +817,7 @@ public class IRecyclerView extends RecyclerView {
                     resetFooterHeight(isPullUpLoading);
                     refreshFooterAndEmptyer();
                 }
-            },ms+10);
+            },ms+100);
         }
 
         return ms;
@@ -890,20 +891,41 @@ public class IRecyclerView extends RecyclerView {
         @Override
         public void run() {
             mDataSetSize = IRecyclerView.this.getCount() -  getHeaderViewsCount() -  getFooterViewsCount();
-
-            boolean isChildFillParent = (mDataSetSize > pull_more_visible_count);//是否完全填充，最后一条数据底部坐标>=ListView底部坐标，说明完全填充；其它未完全填充
-            if(!isChildFillParent && mDataSetSize > 0){//只有在有数据并且未填充满(<pull_more_visible_count)的时候才去判断一下
-                isChildFillParent = mTotalItemCount>IRecyclerView.this.getChildCount();
-                if(!isChildFillParent){
-                    int mListViewHeight = IRecyclerView.this.getMeasuredHeight();
-                    int allChildHeight=0;
-                    for (int i = 0; i < getChildCount(); i++) {
-                        View childView = getChildAt(i);
-                        if(null !=childView && !(childView instanceof IListView.IMessageHandler)){
-                            allChildHeight += childView.getMeasuredHeight();
-                        }
+            boolean isChildFillParent = false;//是否完全填充，最后一条数据底部坐标>=ListView底部坐标，说明完全填充；其它未完全填充
+            if(mDataSetSize > 0){//只有在有数据并且未填充满(<pull_more_visible_count)的时候才去判断一下
+                LayoutManager layout = getLayoutManager();
+                if(layout instanceof StaggeredGridLayoutManager){
+                    int lastVisibleItemPosition = getLastVisiblePosition() - getFooterViewsCount();
+                    if(lastVisibleItemPosition>=0){
+                        int spanCount = ((StaggeredGridLayoutManager)layout).getSpanCount();
+                        int row = (lastVisibleItemPosition / spanCount) + (lastVisibleItemPosition % spanCount == 0 ? 0 : 1) ;
+                        int mListViewHeight = IRecyclerView.this.getMeasuredHeight();
+                        int allChildHeight  =  row * IRecyclerView.this.getChildAt(getHeaderViewsCount()).getMeasuredHeight();
+                        isChildFillParent = allChildHeight>=mListViewHeight;
                     }
-                    isChildFillParent = allChildHeight>=mListViewHeight;
+                }else if(layout instanceof GridLayoutManager){
+                    int lastVisibleItemPosition = getLastVisiblePosition() - getFooterViewsCount();
+                    if(lastVisibleItemPosition>=0){
+                        int spanCount = ((GridLayoutManager)layout).getSpanCount();
+                        int row = (lastVisibleItemPosition / spanCount) + (lastVisibleItemPosition % spanCount == 0 ? 0 : 1) ;
+                        int mListViewHeight = IRecyclerView.this.getMeasuredHeight();
+                        int allChildHeight  =  row * IRecyclerView.this.getChildAt(getHeaderViewsCount()).getMeasuredHeight();
+                        isChildFillParent = allChildHeight>=mListViewHeight;
+                    }
+                }else if(layout instanceof LinearLayoutManager){
+
+                    isChildFillParent =  (mDataSetSize > pull_more_visible_count) || mTotalItemCount>IRecyclerView.this.getChildCount();
+                    if(!isChildFillParent){
+                        int mListViewHeight = IRecyclerView.this.getMeasuredHeight();
+                        int allChildHeight=0;
+                        for (int i = 0; i < getChildCount(); i++) {
+                            View childView = getChildAt(i);
+                            if(null !=childView && !(childView instanceof IListView.IMessageHandler)){
+                                allChildHeight += childView.getMeasuredHeight();
+                            }
+                        }
+                        isChildFillParent = allChildHeight>=mListViewHeight;
+                    }
                 }
             }
 
