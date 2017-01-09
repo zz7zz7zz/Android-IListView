@@ -6,7 +6,6 @@
     android:layout_height="match_parent">
     <com.open.widgets.listview.IListView
         android:id="@+id/listView"
-        style="@style/IListViewStyle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
@@ -18,6 +17,7 @@
         android:divider="#e9e9e9"
         android:dividerHeight="2px"
         android:headerDividersEnabled="false"
+        style="@style/list_scrollbar_style"
 
         app:pull_capacity="PULL_DOWN|AUTO_PULLUP"
         app:pull_header_classname="com.open.widgets.listview.IListViewHeader"
