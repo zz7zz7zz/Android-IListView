@@ -13,7 +13,7 @@ import android.view.View;
 
 public class DividerLinearItemDecoration extends RecyclerView.ItemDecoration {
 
-    public static final String TAG = "DividerDecoration";
+    public static final String TAG = "DividerLinearItemDecoration";
 
     public static final int ORIENTATION_HORIZONTAL  = 1;
     public static final int ORIENTATION_VERTICAL    = 2;

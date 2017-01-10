@@ -108,6 +108,11 @@ public class IRecyclerViewActivity extends Activity implements IPullCallBacks.IP
     }
 
     private void linearLayout(){
+
+        if(null != decor){
+            mIRecyclerView.removeItemDecoration(decor);
+        }
+
         mLayoutManager      = new LinearLayoutManager(getApplicationContext());
 //        ((LinearLayoutManager)mLayoutManager).setOrientation(LinearLayoutManager.HORIZONTAL);
 
@@ -127,6 +132,11 @@ public class IRecyclerViewActivity extends Activity implements IPullCallBacks.IP
     }
 
     private void gridLayout(){
+
+        if(null != decor){
+            mIRecyclerView.removeItemDecoration(decor);
+        }
+
         mLayoutManager      = new GridLayoutManager(getApplicationContext(), 2);
         decor = new DividerGridHeaderFooterItemDecoration(ContextCompat.getDrawable(getApplicationContext(),R.drawable.linear_itemdecoration),false,true);
 
@@ -144,6 +154,11 @@ public class IRecyclerViewActivity extends Activity implements IPullCallBacks.IP
     }
 
     private void staggeredGridLayout(){
+
+        if(null != decor){
+            mIRecyclerView.removeItemDecoration(decor);
+        }
+
         mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         decor = new DividerGridHeaderFooterItemDecoration(ContextCompat.getDrawable(getApplicationContext(),R.drawable.linear_itemdecoration),false,true);
 
@@ -227,7 +242,7 @@ public class IRecyclerViewActivity extends Activity implements IPullCallBacks.IP
     };
 
     //------------------------------Adapter------------------------------
-    public static class IAdapter extends BaseRecyclerAdapter{
+    public class IAdapter extends BaseRecyclerAdapter{
 
         private static final String  TAG = "IAdapter";
 
@@ -244,6 +259,12 @@ public class IRecyclerViewActivity extends Activity implements IPullCallBacks.IP
             Log.v(TAG,"onBindViewHolder " + position + " text"+ bindDataList.get(position));
             BaseRecyclerViewHolder realHolder = (BaseRecyclerViewHolder)holder;
             ((TextView)(realHolder.itemView)).setText(bindDataList.get(position));
+
+            if(mLayoutManager instanceof StaggeredGridLayoutManager){
+                ViewGroup.LayoutParams vlp = realHolder.itemView.getLayoutParams();
+                vlp.height = 150+(position%3)*50;
+                realHolder.itemView.setLayoutParams(vlp);
+            }
         }
 
         @Override

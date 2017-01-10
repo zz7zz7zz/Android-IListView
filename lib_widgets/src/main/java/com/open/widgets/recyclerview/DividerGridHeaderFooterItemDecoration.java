@@ -41,33 +41,42 @@ public class DividerGridHeaderFooterItemDecoration extends RecyclerView.ItemDeco
 
         int adapterPosition = parent.getChildAdapterPosition(view);
         int rPosition = parent.getChildAdapterPosition(view);
-        if(!isDrawHeaderDivider || !isDrawFooterDivider) {
-            HeaderFooterAdapter adapter = parent.getAdapter() instanceof HeaderFooterAdapter ? (HeaderFooterAdapter)parent.getAdapter() : null;
-            if(null != adapter){
-                rPosition = adapter.getRealPosition(adapterPosition);
-                Log.v(TAG,"getItemOffsets adapterPosition "+ adapterPosition + " rPosition "+rPosition);
-                if(rPosition == -1 && !isDrawHeaderDivider || rPosition == -2 && !isDrawFooterDivider){
-                    outRect.set(0, 0, 0, 0);
-                    return ;
-                }
+
+        HeaderFooterAdapter adapter = parent.getAdapter() instanceof HeaderFooterAdapter ? (HeaderFooterAdapter)parent.getAdapter() : null;
+        if(null != adapter){
+            rPosition = adapter.getRealPosition(adapterPosition);
+            Log.v(TAG,"getItemOffsets A adapterPosition "+ adapterPosition + " rPosition "+rPosition);
+            if(rPosition == -1 && !isDrawHeaderDivider) {
+                outRect.set(0, 0, 0, 0);
+                return ;
+            }else if(rPosition == -2 && !isDrawFooterDivider) {
+                outRect.set(0, 0, 0, 0);
+                return ;
+            }
+            else if(isDrawHeaderDivider){
+                outRect.set(0, 0, mDivider.getIntrinsicWidth(), mDivider.getIntrinsicHeight());
+                return;
+            }else if(isDrawFooterDivider){
+                outRect.set(0, 0, mDivider.getIntrinsicWidth(), mDivider.getIntrinsicHeight());
+                return;
             }
         }
 
         int spanCount = getSpanCount(parent);
         int childCount = parent.getAdapter().getItemCount();
-        int itemPosition = (!isDrawHeaderDivider || !isDrawFooterDivider) ? adapterPosition : rPosition;
+        int itemPosition = rPosition;
 
         if (isLastRaw(parent, itemPosition, spanCount, childCount))// 如果是最后一行，则不需要绘制底部
         {
-            Log.v(TAG,"A adapterPosition "+ adapterPosition + " rPosition "+rPosition);
+            Log.v(TAG,"getItemOffsets B adapterPosition "+ adapterPosition + " rPosition "+rPosition);
             outRect.set(0, 0, mDivider.getIntrinsicWidth(), 0);
         } else if (isLastColumn(parent, itemPosition, spanCount, childCount))// 如果是最后一列，则不需要绘制右边
         {
-            Log.v(TAG,"B adapterPosition "+ adapterPosition + " rPosition "+rPosition);
+            Log.v(TAG,"getItemOffsets C adapterPosition "+ adapterPosition + " rPosition "+rPosition);
             outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
         } else
         {
-            Log.v(TAG,"C adapterPosition "+ adapterPosition + " rPosition "+rPosition);
+            Log.v(TAG,"getItemOffsets D adapterPosition "+ adapterPosition + " rPosition "+rPosition);
             outRect.set(0, 0, mDivider.getIntrinsicWidth(), mDivider.getIntrinsicHeight());
         }
     }
