@@ -115,7 +115,7 @@ public abstract class BaseRecyclerAdapter extends RecyclerView.Adapter {
     public final int getRealPosition(IRecyclerView recyclerView , int position){
 
         if (recyclerView.getAdapter() instanceof HeaderFooterAdapter) {
-            return ((HeaderFooterAdapter)recyclerView.getAdapter()).getRealPosition(position);
+            return ((HeaderFooterAdapter)recyclerView.getAdapter()).getHeadersCount() + position;
         }else{
             return position;
         }

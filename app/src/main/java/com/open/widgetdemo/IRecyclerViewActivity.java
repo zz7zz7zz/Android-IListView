@@ -216,6 +216,7 @@ public class IRecyclerViewActivity extends Activity implements IPullCallBacks.IP
             bindDataList.addAll(0,t_bindDataList);
             mIAdapter.notifyDataSetChanged();
 //            mIAdapter.notifyItemRangeInserted(mIRecyclerView,0,10);
+//            mIRecyclerView.scrollToPosition(0);
 
 //            mIRecyclerView.getAdapter().notifyDataSetChanged();
 //            mIRecyclerView.getAdapter().notifyItemRangeInserted(0,10);
