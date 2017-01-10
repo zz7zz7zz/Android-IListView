@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,9 +15,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.open.widgets.R;
-import com.open.widgets.listview.IPullCallBacks;
 import com.open.widgets.listview.IListView;
 import com.open.widgets.listview.IListViewHeader;
+import com.open.widgets.listview.IPullCallBacks;
 import com.open.widgets.recyclerview.BaseRecyclerAdapter;
 import com.open.widgets.recyclerview.BaseRecyclerViewHolder;
 import com.open.widgets.recyclerview.DividerGridHeaderFooterItemDecoration;
@@ -66,9 +65,9 @@ public class IRecyclerViewActivity extends Activity implements IPullCallBacks.IP
             @Override
             public void onClick(View v) {
 
-                linear.setText("linear");
-                grid.setText("grid");
-                staggeredGrid.setText("staggeredGrid");
+                linear.setText("LinearLayout");
+                grid.setText("GridLayout");
+                staggeredGrid.setText("StaggeredGridLayout");
 
                 pulldown_count = 0;
                 min_index = 0;
@@ -112,6 +111,7 @@ public class IRecyclerViewActivity extends Activity implements IPullCallBacks.IP
         if(null != decor){
             mIRecyclerView.removeItemDecoration(decor);
         }
+        mIRecyclerView.setItemAnimator(null);
 
         mLayoutManager      = new LinearLayoutManager(getApplicationContext());
 //        ((LinearLayoutManager)mLayoutManager).setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -124,7 +124,7 @@ public class IRecyclerViewActivity extends Activity implements IPullCallBacks.IP
 
         mIRecyclerView.setLayoutManager(mLayoutManager);
         mIRecyclerView.addItemDecoration(decor);
-        mIRecyclerView.setItemAnimator(new DefaultItemAnimator());
+//        mIRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mIRecyclerView.setAdapter(mIAdapter);
 
         mIRecyclerView.setPullCallBackListener(this);
@@ -136,6 +136,7 @@ public class IRecyclerViewActivity extends Activity implements IPullCallBacks.IP
         if(null != decor){
             mIRecyclerView.removeItemDecoration(decor);
         }
+        mIRecyclerView.setItemAnimator(null);
 
         mLayoutManager      = new GridLayoutManager(getApplicationContext(), 2);
         decor = new DividerGridHeaderFooterItemDecoration(ContextCompat.getDrawable(getApplicationContext(),R.drawable.linear_itemdecoration),false,true);
@@ -145,7 +146,7 @@ public class IRecyclerViewActivity extends Activity implements IPullCallBacks.IP
 
         mIRecyclerView.setLayoutManager(mLayoutManager);
         mIRecyclerView.addItemDecoration(decor);
-        mIRecyclerView.setItemAnimator(new DefaultItemAnimator());
+//        mIRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mIRecyclerView.setAdapter(mIAdapter);
 
 
@@ -158,6 +159,7 @@ public class IRecyclerViewActivity extends Activity implements IPullCallBacks.IP
         if(null != decor){
             mIRecyclerView.removeItemDecoration(decor);
         }
+        mIRecyclerView.setItemAnimator(null);
 
         mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         decor = new DividerGridHeaderFooterItemDecoration(ContextCompat.getDrawable(getApplicationContext(),R.drawable.linear_itemdecoration),false,true);
@@ -167,7 +169,7 @@ public class IRecyclerViewActivity extends Activity implements IPullCallBacks.IP
 
         mIRecyclerView.setLayoutManager(mLayoutManager);
         mIRecyclerView.addItemDecoration(decor);
-        mIRecyclerView.setItemAnimator(new DefaultItemAnimator());
+//        mIRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mIRecyclerView.setAdapter(mIAdapter);
 
         mIRecyclerView.setPullCallBackListener(this);
@@ -234,6 +236,11 @@ public class IRecyclerViewActivity extends Activity implements IPullCallBacks.IP
             max_index += t_bindDataList.size();
             int oldSize = bindDataList.size();
             bindDataList.addAll(t_bindDataList);
+
+            //切记  ：我们自己的RecyclerView调用
+            // 是   ：notifyItemRangeInserted(IRecyclerView recyclerView, int positionStart, int itemCount)；
+            //不是  ：notifyItemRangeInserted(int positionStart, int itemCount)；
+
             mIAdapter.notifyItemRangeInserted(mIRecyclerView,oldSize,PER_PAGE_SIZE);
 //            mIRecyclerView.getAdapter().notifyItemRangeInserted(oldSize,10);
 
