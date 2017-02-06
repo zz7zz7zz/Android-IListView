@@ -285,10 +285,5 @@ public class IRecyclerViewActivity extends Activity implements IPullCallBacks.IP
         public int getItemCount() {
             return bindDataList.size();
         }
-
-        @Override
-        public int getItemViewType(int position) {
-            return position;
-        }
     }
 }
