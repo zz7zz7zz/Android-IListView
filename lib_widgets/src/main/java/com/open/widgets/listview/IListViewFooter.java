@@ -107,12 +107,12 @@ public class IListViewFooter extends LinearLayout implements IFooterCallBack {
 		if (state == STATE_READY) {
 
 			normal();
-			setText(getContext().getResources().getString(R.string.lib_ilistview_footer_normal));
+			setText(getContext().getResources().getString(R.string.lib_ilistview_footer_ready));
 
 		}else {
 
 			normal();
-			setText(getContext().getResources().getString(R.string.lib_ilistview_footer_ready));
+			setText(getContext().getResources().getString(R.string.lib_ilistview_footer_normal));
 		}
 	}
 
