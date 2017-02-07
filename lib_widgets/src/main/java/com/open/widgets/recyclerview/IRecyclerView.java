@@ -394,7 +394,7 @@ public class IRecyclerView extends RecyclerView implements IMessagerDispatcher, 
                 Log.v("IRecyclerView","AAA getFirstVisiblePosition " + getFirstVisiblePosition() + " getLastVisiblePosition "+ getLastVisiblePosition() + " mTotalItemCount "+ mTotalItemCount);
                 isSlideUp = (deltaY < 0);
                 if(mDataSetSize>0){//只有在大于0的情况下才可以下拉/上拉动作, 否则只允许点击空白区域进行加载
-                    if(!isPullDownLoading && isPullDownEnabled() && (getFirstVisiblePosition() == 1 || getFirstVisiblePosition() == 0)) {
+                    if(!isPullDownLoading && isPullDownEnabled() && (getFirstVisiblePosition() <= getHeaderViewsCount())) {
                         updateHeaderHeight(deltaY / OFFSET_RADIO);
                     }
                     else if(!isPullUpLoading && isPullUpEnabled() && (deltaY < 0 || getFooterMargin() > 0) && getLastVisiblePosition() ==  (mTotalItemCount-1)) {
