@@ -22,7 +22,7 @@ public abstract class BaseRecyclerAdapter extends RecyclerView.Adapter {
             super.notifyDataSetChanged();
             return ;
         }
-        super.notifyItemRangeChanged(rPosition, 1);
+        super.notifyItemChanged(rPosition);
     }
 
     public final void notifyItemChanged(IRecyclerView recyclerView, int position, Object payload) {
@@ -32,7 +32,7 @@ public abstract class BaseRecyclerAdapter extends RecyclerView.Adapter {
             super.notifyDataSetChanged();
             return ;
         }
-        super.notifyItemRangeChanged(rPosition, 1, payload);
+        super.notifyItemChanged(rPosition, payload);
     }
 
     public final void notifyItemRangeChanged(IRecyclerView recyclerView, int positionStart, int itemCount) {
@@ -62,7 +62,7 @@ public abstract class BaseRecyclerAdapter extends RecyclerView.Adapter {
             super.notifyDataSetChanged();
             return ;
         }
-        super.notifyItemRangeInserted(rPosition, 1);
+        super.notifyItemInserted(rPosition);
     }
 
     public final void notifyItemMoved(IRecyclerView recyclerView, int fromPosition, int toPosition) {
@@ -99,7 +99,7 @@ public abstract class BaseRecyclerAdapter extends RecyclerView.Adapter {
             super.notifyDataSetChanged();
             return ;
         }
-        super.notifyItemRangeRemoved(rPosition, 1);
+        super.notifyItemRemoved(rPosition);
     }
 
     public final void notifyItemRangeRemoved(IRecyclerView recyclerView, int positionStart, int itemCount) {
