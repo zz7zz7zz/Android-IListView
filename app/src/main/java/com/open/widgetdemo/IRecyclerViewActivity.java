@@ -23,6 +23,7 @@ import com.open.widgets.recyclerview.BaseRecyclerViewHolder;
 import com.open.widgets.recyclerview.DividerGridHeaderFooterItemDecoration;
 import com.open.widgets.recyclerview.DividerLinearItemDecoration;
 import com.open.widgets.recyclerview.IRecyclerView;
+import com.open.widgets.recyclerview.animation.OptionalBaseItemAnimation;
 
 import java.util.ArrayList;
 
@@ -125,6 +126,13 @@ public class IRecyclerViewActivity extends Activity implements IPullCallBacks.IP
         mIRecyclerView.setLayoutManager(mLayoutManager);
         mIRecyclerView.addItemDecoration(decor);
 //        mIRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        RecyclerView.ItemAnimator mAnim = new OptionalBaseItemAnimation(true,true,false,true);
+        mAnim.setAddDuration(200);
+        mAnim.setRemoveDuration(360);
+//        mAnim.setMoveDuration(360);
+//        mAnim.setChangeDuration(360);
+        mIRecyclerView.setItemAnimator(mAnim);
+//        mIRecyclerView.setItemAnimator(new BaseItemAnimator());
         mIRecyclerView.setAdapter(mIAdapter);
 
         mIRecyclerView.setPullCallBackListener(this);
@@ -214,8 +222,8 @@ public class IRecyclerViewActivity extends Activity implements IPullCallBacks.IP
             }
 
             bindDataList.addAll(0,t_bindDataList);
-            mIAdapter.notifyDataSetChanged();
-//            mIAdapter.notifyItemRangeInserted(mIRecyclerView,0,10);
+//            mIAdapter.notifyDataSetChanged();
+            mIAdapter.notifyItemRangeInserted(mIRecyclerView,0,t_bindDataList.size());
 //            mIRecyclerView.scrollToPosition(0);
 
 //            mIRecyclerView.getAdapter().notifyDataSetChanged();
@@ -263,7 +271,7 @@ public class IRecyclerViewActivity extends Activity implements IPullCallBacks.IP
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
             Log.v(TAG,"onBindViewHolder " + position + " text"+ bindDataList.get(position));
             BaseRecyclerViewHolder realHolder = (BaseRecyclerViewHolder)holder;
             ((TextView)(realHolder.itemView)).setText(bindDataList.get(position));
@@ -273,6 +281,26 @@ public class IRecyclerViewActivity extends Activity implements IPullCallBacks.IP
                 vlp.height = 150+(position%3)*50;
                 realHolder.itemView.setLayoutParams(vlp);
             }
+
+            //------------测试-----------
+            holder.itemView.setTag(bindDataList.get(position));
+            realHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            for(int i = 0 ;i <bindDataList.size();i++){
+                                if(bindDataList.get(i) == holder.itemView.getTag()) {
+                                    bindDataList.remove(holder.itemView.getTag());
+                                    mIAdapter.notifyItemRemoved(mIRecyclerView,i);
+                                    break;
+                                }
+                            }
+                        }
+                    },1000);
+                }
+            });
         }
 
         @Override
