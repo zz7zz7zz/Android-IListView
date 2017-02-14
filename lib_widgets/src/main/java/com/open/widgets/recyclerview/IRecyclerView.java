@@ -348,7 +348,7 @@ public class IRecyclerView extends RecyclerView implements IMessagerDispatcher, 
                     //只有在没有加载完成的情况下才去判断是否加载更多
                     if(!isPullUpLoading && isAutoPullUpEnabled() && null !=getAdapter()){
                         int lastPosition =  getLastVisiblePosition();
-                        if (lastPosition == getAdapter().getItemCount()-1){
+                        if (lastPosition >= getAdapter().getItemCount()-1){
                             startPullUpLoading();
                         }
                     }
