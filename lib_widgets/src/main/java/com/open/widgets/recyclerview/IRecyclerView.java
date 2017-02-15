@@ -49,7 +49,7 @@ public class IRecyclerView extends RecyclerView implements IMessagerDispatcher, 
 
         pull_tag 						= a.getString(R.styleable.IRecyclerView_recyclerview_pull_tag);
         pull_capacity 					= a.getInt(R.styleable.IRecyclerView_recyclerview_pull_capacity, ENABLED_PULL_NONE);
-        pull_smooth_transition_duration = a.getInt(R.styleable.IRecyclerView_recyclerview_pull_smooth_transition_duration, DEFAULT_MIN_SPACE_DURATION);
+        pulldown_smooth_transition_duration = a.getInt(R.styleable.IRecyclerView_recyclerview_pull_smooth_transition_duration, DEFAULT_MIN_SPACE_DURATION);
         pull_more_visible_count 		= a.getInt(R.styleable.IRecyclerView_recyclerview_pull_more_visible_count, pull_more_visible_count);
 
         pull_headerview_classname 		= a.getString(R.styleable.IRecyclerView_recyclerview_pull_header_classname);
@@ -231,7 +231,8 @@ public class IRecyclerView extends RecyclerView implements IMessagerDispatcher, 
     private int		pull_capacity = 0; //ListView的下拉/上拉能力
     private int     pull_trigger_distance_pulldown = 0;//下拉时额外的触发距离
     private int 	pull_trigger_distance_pullup = 0;//上拉时额外的触发距离
-    private int		pull_smooth_transition_duration;//一个网络请求触发后，至少停留的的平滑过渡时间，防止网络请求太快，动画瞬间执行，太唐突的感觉
+    private int     pulldown_smooth_transition_duration;//一个网络请求触发后，至少停留的的平滑过渡时间，防止网络请求太快，动画瞬间执行，太唐突的感觉
+    private int     pullup_smooth_transition_duration = 384;//一个网络请求触发后，至少停留的的平滑过渡时间，防止网络请求太快，动画瞬间执行，太唐突的感觉
     private int 	pull_more_visible_count = 6;//至少多少条才展示上拉展示更多
 
     //----------------------------------------------------
@@ -752,12 +753,13 @@ public class IRecyclerView extends RecyclerView implements IMessagerDispatcher, 
     public void stopPullLoading(int pullType , Runnable callBackAction)
     {
         if(pullType == STATUS_PULL_DOWN || pullType == STATUS_PULL_UP){
-            long elapse_time;
             StopRunnable action;
+            long delayMillis;
 
             if(pullType == STATUS_PULL_DOWN){
 
-                elapse_time = System.currentTimeMillis()- latest_pulldown_time;
+                long elapse_time = System.currentTimeMillis()- latest_pulldown_time;
+                delayMillis = elapse_time < pulldown_smooth_transition_duration ? pulldown_smooth_transition_duration - elapse_time : 1;
 
                 mPullDownStopRunnable.pullType = pullType;
                 mPullDownStopRunnable.task     = callBackAction;
@@ -766,8 +768,8 @@ public class IRecyclerView extends RecyclerView implements IMessagerDispatcher, 
 
             } else{
 
-                //			spaceTime = System.currentTimeMillis()- latest_pullup_time;
-                elapse_time = pull_smooth_transition_duration;
+                long elapse_time = System.currentTimeMillis()- latest_pullup_time;
+                delayMillis = elapse_time < pullup_smooth_transition_duration ? pullup_smooth_transition_duration - elapse_time : 1;
 
                 mPullUpStopRunnable.pullType = pullType;
                 mPullUpStopRunnable.task     = callBackAction;
@@ -775,7 +777,8 @@ public class IRecyclerView extends RecyclerView implements IMessagerDispatcher, 
                 action = mPullUpStopRunnable;
             }
 
-            postDelayed(action, elapse_time < pull_smooth_transition_duration ? pull_smooth_transition_duration - elapse_time : 1);
+
+            postDelayed(action, delayMillis);
         }
     }
 
