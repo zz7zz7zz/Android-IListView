@@ -171,7 +171,7 @@ public class IListViewFooter extends LinearLayout implements IFooterCallBack {
 	@Override
 	public long onFooterStop() {
 		on_bottom_reset(false);
-		return NormalStopRunnable.DURATION;
+		return 0;
 	}
 
 	@Override

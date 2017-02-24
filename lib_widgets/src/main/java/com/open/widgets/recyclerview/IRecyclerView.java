@@ -800,14 +800,21 @@ public class IRecyclerView extends RecyclerView implements IMessagerDispatcher, 
             }
 
             //有动画的话，得动画执行完成后设置下拉为false , 防止处于动画过程中用户会执行下拉动作
-            postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    isPullDownLoading = false;
-                    resetHeaderHeight(isPullDownLoading);
-                    refreshFooterAndEmptyer();
-                }
-            },ms+100);
+            if(ms > 0){
+                postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        isPullDownLoading = false;
+                        resetHeaderHeight(isPullDownLoading);
+                        refreshFooterAndEmptyer();
+                    }
+                },ms+100);
+            }else{
+                isPullDownLoading = false;
+                resetHeaderHeight(isPullDownLoading);
+                refreshFooterAndEmptyer();
+            }
+
             return ms;
         }
         else if(pullType == STATUS_PULL_UP && isPullUpLoading){
@@ -818,14 +825,21 @@ public class IRecyclerView extends RecyclerView implements IMessagerDispatcher, 
                 ms = mFooterView.onFooterStop();
             }
 
-            postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    isPullUpLoading = false;
-                    resetFooterHeight(isPullUpLoading);
-                    refreshFooterAndEmptyer();
-                }
-            },ms+100);
+            if(ms > 0){
+                postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        isPullUpLoading = false;
+                        resetFooterHeight(isPullUpLoading);
+                        refreshFooterAndEmptyer();
+                    }
+                },ms+100);
+            }else{
+                isPullUpLoading = false;
+                resetFooterHeight(isPullUpLoading);
+                refreshFooterAndEmptyer();
+            }
+
         }
 
         return ms;
