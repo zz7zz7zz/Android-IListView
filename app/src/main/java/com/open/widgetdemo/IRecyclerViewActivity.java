@@ -107,6 +107,7 @@ public class IRecyclerViewActivity extends Activity implements IPullCallBacks.IP
         super.onDestroy();
     }
 
+    OptionalBaseItemAnimation mItemAnimation = new OptionalBaseItemAnimation(true,true,false,true);
     private void linearLayout(){
 
         if(null != decor){
@@ -118,7 +119,7 @@ public class IRecyclerViewActivity extends Activity implements IPullCallBacks.IP
 //        ((LinearLayoutManager)mLayoutManager).setOrientation(LinearLayoutManager.HORIZONTAL);
 
         decor = new DividerLinearItemDecoration(mLayoutManager.canScrollVertically() ? DividerLinearItemDecoration.ORIENTATION_VERTICAL : DividerLinearItemDecoration.ORIENTATION_HORIZONTAL,
-                ContextCompat.getDrawable(getApplicationContext(),R.drawable.linear_itemdecoration),false,true);
+                ContextCompat.getDrawable(getApplicationContext(),R.drawable.linear_itemdecoration),false,false);
 
         bindDataList    = new ArrayList<>();
         mIAdapter       = new IAdapter(getApplicationContext(),bindDataList);
@@ -126,12 +127,12 @@ public class IRecyclerViewActivity extends Activity implements IPullCallBacks.IP
         mIRecyclerView.setLayoutManager(mLayoutManager);
         mIRecyclerView.addItemDecoration(decor);
 //        mIRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        RecyclerView.ItemAnimator mAnim = new OptionalBaseItemAnimation(true,true,false,true);
-        mAnim.setAddDuration(200);
-        mAnim.setRemoveDuration(360);
+
+        mItemAnimation.setAddDuration(200);
+        mItemAnimation.setRemoveDuration(1200);
 //        mAnim.setMoveDuration(360);
 //        mAnim.setChangeDuration(360);
-        mIRecyclerView.setItemAnimator(mAnim);
+        mIRecyclerView.setItemAnimator(mItemAnimation);
 //        mIRecyclerView.setItemAnimator(new BaseItemAnimator());
         mIRecyclerView.setAdapter(mIAdapter);
 
@@ -283,6 +284,19 @@ public class IRecyclerViewActivity extends Activity implements IPullCallBacks.IP
             }
 
             //------------测试-----------
+
+//            ViewGroup.LayoutParams vlp = realHolder.itemView.getLayoutParams();
+//            vlp.height = 150+(int)(Math.random()*150);
+//            realHolder.itemView.setLayoutParams(vlp);
+//
+//            int color = Color.argb(
+//                    (int)(Math.random()*0xFF),
+//                    (int)(Math.random()*0xFF),
+//                    (int)(Math.random()*0xFF),
+//                    (int)(Math.random()*0xFF));
+//
+//            realHolder.itemView.setBackgroundColor(color);
+
             holder.itemView.setTag(bindDataList.get(position));
             realHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
