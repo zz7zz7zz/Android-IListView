@@ -7,7 +7,7 @@
     <RelativeLayout
         android:id="@+id/footer_content"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:padding="12dp" >
         <ProgressBar
             android:id="@+id/footer_progressbar"

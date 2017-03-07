@@ -64,11 +64,11 @@ public class IListViewFooter extends LinearLayout implements IFooterCallBack {
 	}
 
 	private void setBottomMargin(int height) {
-		if (height < 0)
-			return;
-		LayoutParams lp = (LayoutParams) footer_content.getLayoutParams();
-		lp.bottomMargin = height;
-		footer_content.setLayoutParams(lp);
+//		if (height < 0)
+//			return;
+//		LayoutParams lp = (LayoutParams) footer_content.getLayoutParams();
+//		lp.bottomMargin = height;
+//		footer_content.setLayoutParams(lp);
 	}
 
 	private int getBottomMargin() {
@@ -87,15 +87,17 @@ public class IListViewFooter extends LinearLayout implements IFooterCallBack {
 	}
 
 	public void show() {
-		LayoutParams lp = (LayoutParams) footer_content.getLayoutParams();
-		lp.height = LayoutParams.WRAP_CONTENT;
-		footer.setLayoutParams(lp);
+//		LayoutParams lp = (LayoutParams) footer_content.getLayoutParams();
+//		lp.height = LayoutParams.WRAP_CONTENT;
+//		footer.setLayoutParams(lp);
+		footer.setVisibility(View.VISIBLE);
 	}
 
 	public void hide() {
-		LayoutParams lp = (LayoutParams) footer_content.getLayoutParams();
-		lp.height = 0;
-		footer.setLayoutParams(lp);
+//		LayoutParams lp = (LayoutParams) footer_content.getLayoutParams();
+//		lp.height = 0;
+//		footer.setLayoutParams(lp);
+		footer.setVisibility(View.INVISIBLE);
 	}
 
 	public void setText(String alter) {
@@ -236,9 +238,9 @@ public class IListViewFooter extends LinearLayout implements IFooterCallBack {
 			this.scrollType = scrollType;
 			this.srcY       = getBottomMargin();
 			this.dstY       = (scrollType == SCROLLBACK_CURRENT_TO_DEFAULT) ? 0 : 0;
-			if(srcY == dstY){
-				return;
-			}
+//			if(srcY == dstY){
+//				return;
+//			}
 
 			changeStatus(STATUS_STOP);
 			changeStatus(STATUS_START);
