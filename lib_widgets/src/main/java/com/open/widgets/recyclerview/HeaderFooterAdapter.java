@@ -82,10 +82,12 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
             return -1;
         }
 
-        final int adjPosition = position - numHeaders;
-        int adapterCount = mAdapter.getItemCount();
-        if (adjPosition < adapterCount) {
-            return adjPosition;
+        if(null != mAdapter){
+            final int adjPosition = position - numHeaders;
+            int adapterCount = mAdapter.getItemCount();
+            if (adjPosition < adapterCount) {
+                return adjPosition;
+            }
         }
 
         // Footer (off-limits positions will throw an IndexOutOfBoundsException)
@@ -113,7 +115,12 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
             }
             return BaseRecyclerViewHolder.createViewHolder(mFooterViewInfos.get(viewType));
         }
-        return mAdapter.onCreateViewHolder(parent,viewType);
+
+        if(null != mAdapter){
+            return mAdapter.onCreateViewHolder(parent,viewType);
+        }else {
+            throw new IllegalArgumentException("mAdapter is null ,unrecognized viewType " + viewType);
+        }
     }
 
     @Override
