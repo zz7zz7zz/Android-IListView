@@ -161,7 +161,7 @@ public class IListViewFooter extends LinearLayout implements IFooterCallBack {
 	}
 
 	@Override
-	public void onFooterLoading() {
+	public void onFooterStart() {
 		loading();
 	}
 

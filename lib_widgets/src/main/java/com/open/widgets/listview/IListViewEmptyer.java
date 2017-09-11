@@ -8,9 +8,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.open.lib_widgets.R;
 import com.open.widgets.listview.IPullCallBacks.IEmptyerCallBack;
 import com.open.widgets.listview.IPullCallBacks.IMessagerDispatcher;
-import com.open.lib_widgets.R;
 
 
 /**

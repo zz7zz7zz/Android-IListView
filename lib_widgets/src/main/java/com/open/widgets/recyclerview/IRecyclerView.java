@@ -18,11 +18,11 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 
 import com.open.lib_widgets.R;
-import com.open.widgets.listview.IPullCallBacks.IMessagerDispatcher;
 import com.open.widgets.listview.IPullCallBacks.IEmptyerCallBack;
 import com.open.widgets.listview.IPullCallBacks.IFooterCallBack;
 import com.open.widgets.listview.IPullCallBacks.IHeaderCallBack;
 import com.open.widgets.listview.IPullCallBacks.IMessageHandler;
+import com.open.widgets.listview.IPullCallBacks.IMessagerDispatcher;
 import com.open.widgets.listview.IPullCallBacks.IPullCallBackListener;
 
 import java.lang.reflect.Constructor;
@@ -32,7 +32,7 @@ import java.util.HashMap;
  * Created by long on 2016/12/29.
  */
 
-public class IRecyclerView extends RecyclerView implements IMessagerDispatcher, IMessageHandler{
+public class IRecyclerView extends RecyclerView implements IMessagerDispatcher, IMessageHandler {
 
     public IRecyclerView(Context context) {
         this(context, null);
@@ -246,6 +246,7 @@ public class IRecyclerView extends RecyclerView implements IMessagerDispatcher, 
     private boolean isSlideUp;//是否上滑趋势
     private int   mDataSetSize= 0;  //真实数据大小
     private boolean isPullDownLoading = false;
+    private boolean isPullDownStoping     = false;//是否正在暂停中，当执行stopPull()后并没有真正的stop，会把该属性设置为true，当stopPull的动画完成后，会把该属性设置为false，同时isPullDownloading也被设置为false，这时候才是真正的stop了
     private boolean isPullUpLoading   = false;
     private IPullCallBackListener mPullCallBackListener = null;
     private int mTotalItemCount;
@@ -738,7 +739,7 @@ public class IRecyclerView extends RecyclerView implements IMessagerDispatcher, 
             isPullUpLoading=true;
 
             if(null != mFooterView) {
-                mFooterView.onFooterLoading();
+                mFooterView.onFooterStart();
             }
 
             if(null != mPullCallBackListener) {
@@ -800,19 +801,11 @@ public class IRecyclerView extends RecyclerView implements IMessagerDispatcher, 
             }
 
             //有动画的话，得动画执行完成后设置下拉为false , 防止处于动画过程中用户会执行下拉动作
-            if(ms > 0){
-                postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        isPullDownLoading = false;
-                        resetHeaderHeight(isPullDownLoading);
-                        refreshFooterAndEmptyer();
-                    }
-                },ms+100);
-            }else{
-                isPullDownLoading = false;
-                resetHeaderHeight(isPullDownLoading);
-                refreshFooterAndEmptyer();
+            if (ms > 0) {
+                isPullDownStoping = true;
+                postDelayed(retsetHeaderRunnable, ms + 100);
+            } else {
+                retsetHeaderRunnable.run();
             }
 
             return ms;
@@ -825,33 +818,46 @@ public class IRecyclerView extends RecyclerView implements IMessagerDispatcher, 
                 ms = mFooterView.onFooterStop();
             }
 
-            if(ms > 0){
-                postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        isPullUpLoading = false;
-                        resetFooterHeight(isPullUpLoading);
-                        refreshFooterAndEmptyer();
-                    }
-                },ms+100);
-            }else{
-                isPullUpLoading = false;
-                resetFooterHeight(isPullUpLoading);
-                refreshFooterAndEmptyer();
+            if (ms > 0) {
+                postDelayed(retsetFooterRunnable, ms + 100);
+            } else {
+                retsetFooterRunnable.run();
             }
-
         }
 
         return ms;
     }
 
+    private Runnable retsetHeaderRunnable = new Runnable() {
+        @Override
+        public void run() {
+            isPullDownStoping = false;
+            isPullDownLoading = false;
+            resetHeaderHeight(isPullDownLoading);
+            refreshFooterAndEmptyer();
+        }
+    };
+
+    private Runnable retsetFooterRunnable = new Runnable() {
+        @Override
+        public void run() {
+            isPullUpLoading = false;
+            resetFooterHeight(isPullUpLoading);
+            refreshFooterAndEmptyer();
+        }
+    };
+
     private class StartRunnable implements Runnable {
         @Override
         public void run() {
 
-            if(isPullDownLoading) {
+            //当正在下拉过程中，并且未处于暂停过程中时，此时下拉无效；而当用户不处于下拉过程中，或者处于下拉过程中但是已经处于暂停中时则可以执行下拉操作
+            if (isPullDownLoading && !isPullDownStoping ) {
                 return;
             }
+
+            removeCallbacks(retsetHeaderRunnable);
+            isPullDownStoping = false;
             isPullDownLoading = true;
 
             mDataSetSize = IRecyclerView.this.getCount() -  getHeaderViewsCount() -  getFooterViewsCount();
@@ -866,7 +872,7 @@ public class IRecyclerView extends RecyclerView implements IMessagerDispatcher, 
             }else{//2.有数据时
 
                 if(null != mHeaderView) {
-                    mHeaderView.onHeaderLoading();
+                    mHeaderView.onHeaderStart();
                 }
             }
 

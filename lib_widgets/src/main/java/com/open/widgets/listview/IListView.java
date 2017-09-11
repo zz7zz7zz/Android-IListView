@@ -14,8 +14,13 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
-import com.open.widgets.listview.IPullCallBacks.*;
 import com.open.lib_widgets.R;
+import com.open.widgets.listview.IPullCallBacks.IEmptyerCallBack;
+import com.open.widgets.listview.IPullCallBacks.IFooterCallBack;
+import com.open.widgets.listview.IPullCallBacks.IHeaderCallBack;
+import com.open.widgets.listview.IPullCallBacks.IMessageHandler;
+import com.open.widgets.listview.IPullCallBacks.IMessagerDispatcher;
+import com.open.widgets.listview.IPullCallBacks.IPullCallBackListener;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
@@ -24,7 +29,7 @@ import java.util.HashMap;
  * IListvew
  * Created by long on 2016/12/20.
  */
-public class IListView extends ListView implements IMessagerDispatcher , IMessageHandler{
+public class IListView extends ListView implements IMessagerDispatcher, IMessageHandler {
 
 	public static final String TAG = "IListView";
 
@@ -542,7 +547,7 @@ public class IListView extends ListView implements IMessagerDispatcher , IMessag
 			isPullUpLoading=true;
 
 			if(null != mFooterView) {
-				mFooterView.onFooterLoading();
+				mFooterView.onFooterStart();
 			}
 
 			if(null != mPullCallBackListener) {
@@ -654,7 +659,7 @@ public class IListView extends ListView implements IMessagerDispatcher , IMessag
 			}else{//2.有数据时
 
 				if(null != mHeaderView) {
-					mHeaderView.onHeaderLoading();
+					mHeaderView.onHeaderStart();
 				}
 			}
 

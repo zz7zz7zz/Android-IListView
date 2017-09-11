@@ -128,20 +128,6 @@ public class IListViewHeader extends LinearLayout implements IHeaderCallBack {
 		}
 	}
 
-	//---------------------------------优化操作----------------------------------------
-
-	private void on_head_reset(boolean isPullDownLoading){
-
-		if(mToastToStopRunnable.isRunning){//如果正在执行动画回调则不进行回调
-			return;
-		}
-		mNormalStopRunnable.start(isPullDownLoading ? NormalStopRunnable.SCROLLBACK_CURRENT_TO_LOADING : NormalStopRunnable.SCROLLBACK_CURRENT_TO_DEFAULT);
-	}
-
-	private void on_head_stop(){
-		mToastToStopRunnable.start();
-	}
-
 	//---------------------------------重写一些基本方法----------------------------------------
 
 	@Override
@@ -159,6 +145,9 @@ public class IListViewHeader extends LinearLayout implements IHeaderCallBack {
 
 	@Override
 	public void onHeaderReset(boolean isPullDownLoadingNextMoment) {
+		if (mToastToStopRunnable.isRunning || mNormalStopRunnable.isRunning) {// 如果正在执行动画回调则不进行回调
+			return;
+		}
 		mNormalStopRunnable.start(isPullDownLoadingNextMoment ? NormalStopRunnable.SCROLLBACK_CURRENT_TO_LOADING : NormalStopRunnable.SCROLLBACK_CURRENT_TO_DEFAULT);
 	}
 
@@ -168,18 +157,23 @@ public class IListViewHeader extends LinearLayout implements IHeaderCallBack {
 	}
 
 	@Override
-	public void onHeaderLoading() {
-		header_loading_animview.startAnimation();
-		on_head_reset(true);
+	public void onHeaderStart() {
+        //暂停以前的动画
+        mToastToStopRunnable.stopAnim();
+        mNormalStopRunnable.stopAnim();
+
+        //接着开始做下拉动画
+        header_loading_animview.startAnimation();
+        mNormalStopRunnable.start( NormalStopRunnable.SCROLLBACK_CURRENT_TO_LOADING );
 	}
 
 	@Override
 	public long onHeaderStop() {
-		if(!TextUtils.isEmpty(toastText)){
-			on_head_stop();
+		if (!TextUtils.isEmpty(toastText)) {
+			mToastToStopRunnable.start();
 			return ToastToStopRunnable.DURATION;
-		}else{
-			on_head_reset(false);
+		}else {
+			mNormalStopRunnable.start(NormalStopRunnable.SCROLLBACK_CURRENT_TO_DEFAULT);
 			return NormalStopRunnable.DURATION;
 		}
 	}
@@ -195,7 +189,7 @@ public class IListViewHeader extends LinearLayout implements IHeaderCallBack {
 	private class NormalStopRunnable implements Runnable {
 
 		static final int STATUS_START = 1;
-		static final int STATUS_STOP  = 3;
+		static final int STATUS_STOP  = 2;
 
 		static final long DURATION = 500;
 
@@ -256,6 +250,10 @@ public class IListViewHeader extends LinearLayout implements IHeaderCallBack {
 			}
 
 			messagDispatcher.sendMessage(IMessagerDispatcher.DST_ILISTVIEW, IPullCallBacks.IMessageHandler.STOP_HEADER);
+		}
+
+		public void stopAnim(){
+			changeStatus(STATUS_STOP);
 		}
 
 		@Override
@@ -346,8 +344,13 @@ public class IListViewHeader extends LinearLayout implements IHeaderCallBack {
 			changeStatus(STATUS_START);
 		}
 
-		public void stop(){
+		public void stop() {
 			onStateChanged(STATE_NORMAL);
+			changeStatus(STATUS_STOP);
+			setVisiableHeight(0);
+		}
+
+		public void stopAnim(){
 			changeStatus(STATUS_STOP);
 		}
 
@@ -421,7 +424,6 @@ public class IListViewHeader extends LinearLayout implements IHeaderCallBack {
 					header_loading_animview.setAlpha(1);
 					header_loading_toast.setVisibility(View.GONE);
 					header_loading_toast.setAlpha(0);
-					setVisiableHeight(0);
 				}
 			}
 		}

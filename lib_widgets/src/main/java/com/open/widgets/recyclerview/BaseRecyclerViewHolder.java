@@ -23,9 +23,12 @@ public class BaseRecyclerViewHolder extends RecyclerView.ViewHolder{
         return holder;
     }
 
-    public static BaseRecyclerViewHolder createViewHolder(Context context, ViewGroup parent, int layoutId)
-    {
-        View itemView = LayoutInflater.from(context).inflate(layoutId, parent, false);
+    public static BaseRecyclerViewHolder createViewHolder(Context context, ViewGroup parent, int layoutId) {
+        return createViewHolder(LayoutInflater.from(context),parent,layoutId);
+    }
+
+    public static BaseRecyclerViewHolder createViewHolder(LayoutInflater mLayoutInflater, ViewGroup parent, int layoutId) {
+        View itemView = mLayoutInflater.inflate(layoutId, parent, false);
         BaseRecyclerViewHolder holder = new BaseRecyclerViewHolder(itemView);
         return holder;
     }
