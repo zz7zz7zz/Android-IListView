@@ -7,15 +7,14 @@ package com.open.widgets.listview;
 
 import android.content.Context;
 import android.os.Build;
+import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.AnimationUtils;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.open.lib_widgets.R;
@@ -26,17 +25,16 @@ import com.open.widgets.listview.IPullCallBacks.IMessagerDispatcher;
  * Header in IListvew
  * Created by long on 2016/12/20.
  */
-public class IListViewHeader extends LinearLayout implements IHeaderCallBack {
+public class IListViewHeader2 extends ConstraintLayout implements IHeaderCallBack {
 
-	public static final String TAG = "IListViewHeader";
+	public static final String TAG = "IListViewHeader2";
 
 	public static final int CMD_HEAD_SET_TOAST_TEXT = 2001;
 	public static final int STATE_NORMAL 			= 11;
 	public static final int STATE_READY 			= 12;
 
-	private IMessagerDispatcher messagDispatcher;
+    private IMessagerDispatcher messagDispatcher;
 
-	private LinearLayout 				header;
 	private IListViewHeaderLoadingView 	header_loading_animview;
 	private TextView 					header_loading_toast;
 
@@ -44,19 +42,16 @@ public class IListViewHeader extends LinearLayout implements IHeaderCallBack {
 	private int maxHeadHeight;
 	private int loadingHeight;
 
-	public IListViewHeader(Context context) {
+	public IListViewHeader2(Context context) {
 		super(context);
 		initView(context);
 	}
 
 	private void initView(final Context context) {
-		LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
-		header = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.lib_listview_header, null);
-		addView(header, lp);
-		setGravity(Gravity.BOTTOM);
+		LayoutInflater.from(context).inflate(R.layout.lib_listview_header2, this,true);
 
-		header_loading_animview = (IListViewHeaderLoadingView) header.findViewById(R.id.header_loading_animview);
-		header_loading_toast = (TextView) header.findViewById(R.id.header_loading_toast);
+		header_loading_animview = (IListViewHeaderLoadingView) findViewById(R.id.header_loading_animview);
+		header_loading_toast = (TextView) findViewById(R.id.header_loading_toast);
 		getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 			@SuppressWarnings("deprecation")
 			@Override
@@ -100,13 +95,13 @@ public class IListViewHeader extends LinearLayout implements IHeaderCallBack {
 		{
 			height = 0;
 		}
-		LayoutParams lp = (LayoutParams) header.getLayoutParams();
+		RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) getLayoutParams();
 		lp.height = Math.min(height, maxHeadHeight);
-		header.setLayoutParams(lp);
+		setLayoutParams(lp);
 	}
 
 	public int getVisiableHeight() {
-		return header.getLayoutParams().height;
+		return getLayoutParams().height;
 	}
 
 	public int getDefaultHeadHeight()
@@ -196,9 +191,6 @@ public class IListViewHeader extends LinearLayout implements IHeaderCallBack {
 	public void onHeaderRelease() {
 		mToastToStopRunnable.stop();
 		mNormalStopRunnable.stop();
-        header_loading_animview.stopAnimation();
-        removeCallbacks(mToastToStopRunnable);
-        removeCallbacks(mNormalStopRunnable);
 	}
 
 	//---------------------------------Normal To Stop----------------------------------------
@@ -235,6 +227,7 @@ public class IListViewHeader extends LinearLayout implements IHeaderCallBack {
 		private final int refresh_frequency             = 0;
 
 		public void start(int scrollType){
+
 			if(this.scrollType == scrollType && isRunning){
 				return;
 			}
@@ -249,7 +242,6 @@ public class IListViewHeader extends LinearLayout implements IHeaderCallBack {
 				}
 				return;
 			}
-
 			changeStatus(STATUS_STOP);
 			changeStatus(STATUS_START);
 		}

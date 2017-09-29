@@ -528,6 +528,20 @@ public class IRecyclerView extends RecyclerView implements IMessagerDispatcher, 
         }
     }
 
+    private void showHeaderView()
+    {
+        if(null != mHeaderView) {
+            mHeaderView.onHeaderShow();
+        }
+    }
+
+    private void hiddenHeaderView()
+    {
+        if (null != mHeaderView) {
+            mHeaderView.onHeaderHidden();
+        }
+    }
+
     //------------------------ FootView------------------------------
     public void addFooterView()
     {
@@ -865,6 +879,8 @@ public class IRecyclerView extends RecyclerView implements IMessagerDispatcher, 
             if(mDataSetSize <= 0){//1.首次没有数据时
 
                 showEmptyView();
+                hiddenHeaderView();
+                hiddenFooterView();
                 if(null != mEmptyerView){
                     mEmptyerView.onEmptyerStart();
                 }
@@ -955,6 +971,12 @@ public class IRecyclerView extends RecyclerView implements IMessagerDispatcher, 
                         isChildFillParent = allChildHeight>=mListViewHeight;
                     }
                 }
+            }
+
+            if(mDataSetSize >0 ){
+                showHeaderView();
+            }else{
+                hiddenHeaderView();
             }
 
             if (isChildFillParent) {

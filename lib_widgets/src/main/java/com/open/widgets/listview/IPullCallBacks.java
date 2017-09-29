@@ -46,6 +46,10 @@ public class IPullCallBacks {
         boolean onHeaderCanPullDown();
 
         void onHeaderReset(boolean isPullDownLoadingNextMoment);
+
+        void onHeaderShow();
+
+        void onHeaderHidden();
     }
 
     public interface IFooterCallBack extends IMessageHandler {

@@ -97,7 +97,7 @@ public class IListViewFooter extends LinearLayout implements IFooterCallBack {
 //		LayoutParams lp = (LayoutParams) footer_content.getLayoutParams();
 //		lp.height = 0;
 //		footer.setLayoutParams(lp);
-		footer.setVisibility(View.INVISIBLE);
+		footer.setVisibility(View.GONE);
 	}
 
 	public void setText(String alter) {

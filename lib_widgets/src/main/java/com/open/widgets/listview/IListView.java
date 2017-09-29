@@ -336,6 +336,20 @@ public class IListView extends ListView implements IMessagerDispatcher, IMessage
 		}
 	}
 
+	private void showHeaderView()
+	{
+		if(null != mHeaderView) {
+			mHeaderView.onHeaderShow();
+		}
+	}
+
+	private void hiddenHeaderView()
+	{
+		if (null != mHeaderView) {
+			mHeaderView.onHeaderHidden();
+		}
+	}
+
 	//------------------------ FootView------------------------------
 	public void addFooterView()
 	{
@@ -721,6 +735,12 @@ public class IListView extends ListView implements IMessagerDispatcher, IMessage
 					}
 					isChildFillParent = allChildHeight>=mListViewHeight;
 				}
+			}
+
+			if(mDataSetSize >0 ){
+				showHeaderView();
+			}else{
+				hiddenHeaderView();
 			}
 
 			if (isChildFillParent) {
