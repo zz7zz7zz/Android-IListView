@@ -2,6 +2,8 @@ package com.open.widgets.recyclerview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.widget.GridLayoutManager;
@@ -135,7 +137,7 @@ public class IRecyclerView extends RecyclerView implements IMessagerDispatcher, 
     private void removeFixedViewInfo(View v, SparseArrayCompat<View> where) {
         int len = where.size();
         for (int i = 0; i < len; ++i) {
-            Object obj = mHeaderViewInfos.valueAt(i);
+            Object obj = where.valueAt(i);
             if(v == obj){
                 where.removeAt(i);
                 break;
@@ -519,13 +521,13 @@ public class IRecyclerView extends RecyclerView implements IMessagerDispatcher, 
 
     }
 
-    public void removeHeaderView()
-    {
-        if (null != mHeaderView)
-        {
-            removeHeaderView((View) mHeaderView);
-            mHeaderView =null;
+    public boolean removeHeaderView() {
+        boolean ret = false;
+        if (null != mHeaderView) {
+            ret = removeHeaderView((View) mHeaderView);
+            mHeaderView = null;
         }
+        return ret;
     }
 
     private void showHeaderView()
@@ -583,13 +585,13 @@ public class IRecyclerView extends RecyclerView implements IMessagerDispatcher, 
         }
     }
 
-    public void removeFooterView()
-    {
-        if (null != mFooterView)
-        {
-            removeFooterView((View) mFooterView);
-            mFooterView =null;
+    public boolean removeFooterView() {
+        boolean ret = false;
+        if (null != mFooterView) {
+            ret = removeFooterView((View) mFooterView);
+            mFooterView = null;
         }
+        return ret;
     }
 
     private void showFooterView()
@@ -748,7 +750,7 @@ public class IRecyclerView extends RecyclerView implements IMessagerDispatcher, 
     public void startPullUpLoading()
     {
         // 滚动到底部
-        if (!isPullUpLoading ){
+        if (!isPullUpLoading && (isPullUpEnabled() || isAutoPullUpEnabled())) {
 
             isPullUpLoading=true;
 
@@ -1046,5 +1048,71 @@ public class IRecyclerView extends RecyclerView implements IMessagerDispatcher, 
         }catch (Exception e){
             return false;
         }
+    }
+
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        Parcelable superState = super.onSaveInstanceState();
+        SavedState ss = new SavedState(superState);
+        ss.pull_capacity = pull_capacity;
+        ss.isRemoveHeader= (null == mHeaderView);
+        ss.isRemoveFooter= (null == mFooterView);
+        return ss;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        if (!(state instanceof SavedState)) {
+            super.onRestoreInstanceState(state);
+            return;
+        }
+
+        SavedState ss = (SavedState)state;
+        super.onRestoreInstanceState(ss.getSuperState());
+        this.pull_capacity = ss.pull_capacity;
+        if(ss.isRemoveHeader){
+            removeHeaderView();
+        }
+        if(ss.isRemoveFooter){
+            removeFooterView();
+        }
+    }
+
+    static final class SavedState extends BaseSavedState {
+
+
+        private int pull_capacity = -1; // 最近一次的拉取方式
+        private boolean isRemoveHeader; // 是否删除了Header
+        private boolean isRemoveFooter; // 是否删除了Footer
+
+        SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        protected SavedState(Parcel in) {
+            super(in);
+            this.pull_capacity = in.readInt();
+            this.isRemoveHeader = in.readByte() != 0;
+            this.isRemoveFooter = in.readByte() != 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            super.writeToParcel(dest, flags);
+            dest.writeInt(this.pull_capacity);
+            dest.writeByte(this.isRemoveHeader ? (byte) 1 : (byte) 0);
+            dest.writeByte(this.isRemoveFooter ? (byte) 1 : (byte) 0);
+        }
+
+        public static final Parcelable.Creator<SavedState> CREATOR
+                = new Parcelable.Creator<SavedState>() {
+            public SavedState createFromParcel(Parcel in) {
+                return new SavedState(in);
+            }
+
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        };
     }
 }

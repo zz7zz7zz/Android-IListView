@@ -43,7 +43,7 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
 
     public boolean removeHeader(View v) {
         for (int i = 0; i < mHeaderViewInfos.size(); i++) {
-            View view = mHeaderViewInfos.get(i);
+            View view = mHeaderViewInfos.valueAt(i);
             if (view == v) {
                 mHeaderViewInfos.removeAt(i);
                 return true;
@@ -54,9 +54,9 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
 
     public boolean removeFooter(View v) {
         for (int i = 0; i < mFooterViewInfos.size(); i++) {
-            View view = mFooterViewInfos.get(i);
+            View view = mFooterViewInfos.valueAt(i);
             if (view == v) {
-                mHeaderViewInfos.removeAt(i);
+                mFooterViewInfos.removeAt(i);
                 return true;
             }
         }
@@ -196,6 +196,7 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
 
     @Override
     public void registerAdapterDataObserver(RecyclerView.AdapterDataObserver observer) {
+        super.registerAdapterDataObserver(observer);
         if (mAdapter != null) {
             mAdapter.registerAdapterDataObserver(observer);
         }
@@ -203,6 +204,7 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
 
     @Override
     public void unregisterAdapterDataObserver(RecyclerView.AdapterDataObserver observer) {
+        super.unregisterAdapterDataObserver(observer);
         if (mAdapter != null) {
             mAdapter.unregisterAdapterDataObserver(observer);
         }
