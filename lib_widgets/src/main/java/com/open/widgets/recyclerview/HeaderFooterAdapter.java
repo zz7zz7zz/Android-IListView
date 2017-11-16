@@ -18,14 +18,14 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
 
     public static final int BASE_ITEM_VIEW_TYPE_HEADER = 100000;
     public static final int BASE_ITEM_VIEW_TYPE_FOOTER = 200000;
+    private static final SparseArrayCompat<View> EMPTY_INFO_LIST = new SparseArrayCompat<>(0);
 
     private SparseArrayCompat<View> mHeaderViewInfos = null;
     private SparseArrayCompat<View> mFooterViewInfos = null;
     private RecyclerView.Adapter mAdapter;
 
-    static final SparseArrayCompat<View> EMPTY_INFO_LIST = new SparseArrayCompat<>(0);
-
-    HeaderFooterAdapter(SparseArrayCompat<View> headerViewInfos, SparseArrayCompat<View> footerViewInfos, RecyclerView.Adapter mAdapter) {
+    HeaderFooterAdapter(SparseArrayCompat<View> headerViewInfos, SparseArrayCompat<View> footerViewInfos,
+                        RecyclerView.Adapter mAdapter) {
 
         if (headerViewInfos == null) {
             mHeaderViewInfos = EMPTY_INFO_LIST;
@@ -101,17 +101,14 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        Log.v(TAG,"onCreateViewHolder " + viewType);
-        if(null != mHeaderViewInfos.get(viewType)){
-            if(null !=mHeaderViewInfos.get(viewType)){
-                mHeaderViewInfos.get(viewType).setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
-            }
+        // Log.v(TAG,"onCreateViewHolder " + viewType);
+        if (null != mHeaderViewInfos.get(viewType)) {
+            mHeaderViewInfos.get(viewType).setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
             return BaseRecyclerViewHolder.createViewHolder(mHeaderViewInfos.get(viewType));
-        }
-        else if(null != mFooterViewInfos.get(viewType)){
-            if(null !=mFooterViewInfos.get(viewType)){
-                mFooterViewInfos.get(viewType).setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
-            }
+        } else if (null != mFooterViewInfos.get(viewType)) {
+            mFooterViewInfos.get(viewType).setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
             return BaseRecyclerViewHolder.createViewHolder(mFooterViewInfos.get(viewType));
         }
 
@@ -129,7 +126,8 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
         // Header (negative positions will throw an IndexOutOfBoundsException)
         int numHeaders = getHeadersCount();
         if (position < numHeaders) {
-            return ;
+//            Log.v(TAG,"onBindViewHolder header " + position);
+            return;
         }
 
         // Adapter
@@ -137,12 +135,21 @@ public final class HeaderFooterAdapter extends RecyclerView.Adapter {
         if (mAdapter != null) {
             int adapterCount = mAdapter.getItemCount();
             if (adjPosition < adapterCount) {
-                mAdapter.onBindViewHolder(holder,adjPosition);
-                return ;
+//                Log.v(TAG,"onBindViewHolder content " + position);
+                mAdapter.onBindViewHolder(holder, adjPosition);
+                return;
             }
         }
 
+//        Log.v(TAG,"onBindViewHolder footer " + position);
         // Footer (off-limits positions will throw an IndexOutOfBoundsException)
+
+        //因为有可能footerViewInfos的某个FooterView的子View元素改变了，比如可见性改变了，此时需要使View失效，重新绘制，这样整个ViewGroup才会更新到最新的画面
+        int viewType = getItemViewType(position);
+        if (null != mFooterViewInfos.get(viewType)) {
+            mFooterViewInfos.get(viewType).invalidate();
+        }
+
         return;
     }
 
