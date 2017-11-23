@@ -1050,6 +1050,7 @@ public class IRecyclerView extends RecyclerView implements IMessagerDispatcher, 
         }
     }
 
+    //--------------------------------------
     @Override
     protected Parcelable onSaveInstanceState() {
         Parcelable superState = super.onSaveInstanceState();
