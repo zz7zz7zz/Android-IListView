@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">widgets</string>
+    <string name="app_name">android-listview</string>
 
     <string name="demo_listview">Listview</string>
     <string name="demo_recyclerview">Recyclerview</string>

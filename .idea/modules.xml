@@ -3,7 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Android-IListView.iml" filepath="$PROJECT_DIR$/Android-IListView.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android-listview.iml" filepath="$PROJECT_DIR$/android-listview.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib_widgets/lib_widgets.iml" filepath="$PROJECT_DIR$/lib_widgets/lib_widgets.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib_widgets/lib_widgets.iml" filepath="$PROJECT_DIR$/lib_widgets/lib_widgets.iml" />
     </modules>
   </component>
