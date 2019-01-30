@@ -46,10 +46,6 @@ public class IPullCallBacks {
         boolean onHeaderCanPullDown();
 
         void onHeaderReset(boolean isPullDownLoadingNextMoment);
-
-        void onHeaderShow();
-
-        void onHeaderHidden();
     }
 
     public interface IFooterCallBack extends IMessageHandler {
@@ -102,4 +98,23 @@ public class IPullCallBacks {
         void onPullUp();
 
     }
+
+
+    // ----------------------------更多----------------------------------
+    public interface IEmptyerViewClickListener {
+
+        /**
+         * 是否已经处理了EmpterView的点击事件
+         * @return 已经处理返回true ,未处理返回false;
+         */
+        boolean onEmpterViewClick();
+
+    }
+
+    public interface IFooterViewClickListener {
+
+        void onFooterClick();
+
+    }
+
 }

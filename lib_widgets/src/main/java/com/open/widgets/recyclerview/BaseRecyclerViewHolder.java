@@ -10,15 +10,13 @@ import android.view.ViewGroup;
  * Created by long on 2016/12/29.
  */
 
-public class BaseRecyclerViewHolder extends RecyclerView.ViewHolder{
+public class BaseRecyclerViewHolder extends RecyclerView.ViewHolder {
 
-    public BaseRecyclerViewHolder(View itemView)
-    {
+    public BaseRecyclerViewHolder(View itemView) {
         super(itemView);
     }
 
-    public static BaseRecyclerViewHolder createViewHolder(View itemView)
-    {
+    public static BaseRecyclerViewHolder createViewHolder(View itemView) {
         BaseRecyclerViewHolder holder = new BaseRecyclerViewHolder(itemView);
         return holder;
     }

@@ -129,7 +129,6 @@ public class IListViewHeader2 extends ConstraintLayout implements IHeaderCallBac
 	public void onHeaderInit(IMessagerDispatcher messagDispatcher, Object... args) {
 		this.messagDispatcher = messagDispatcher;
 		triggerDis = (int)args[0];
-		onHeaderHidden();
 	}
 
 	@Override
@@ -145,16 +144,6 @@ public class IListViewHeader2 extends ConstraintLayout implements IHeaderCallBac
 			return;
 		}
 		mNormalStopRunnable.start(isPullDownLoadingNextMoment ? NormalStopRunnable.SCROLLBACK_CURRENT_TO_LOADING : NormalStopRunnable.SCROLLBACK_CURRENT_TO_DEFAULT);
-	}
-
-	@Override
-	public void onHeaderShow() {
-		setVisibility(VISIBLE);
-	}
-
-	@Override
-	public void onHeaderHidden() {
-		setVisibility(GONE);
 	}
 
 	@Override

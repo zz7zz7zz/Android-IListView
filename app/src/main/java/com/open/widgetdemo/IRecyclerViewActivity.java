@@ -223,6 +223,13 @@ public class IRecyclerViewActivity extends Activity implements IPullCallBacks.IP
             }
 
             bindDataList.addAll(0,t_bindDataList);
+
+            if( bindDataList.size() == 0 ){
+                mIRecyclerView.removeFooterView();
+            }else{
+                mIRecyclerView.addFooterView();
+            }
+
 //            mIAdapter.notifyDataSetChanged();
             mIAdapter.notifyItemRangeInserted(mIRecyclerView,0,t_bindDataList.size());
 //            mIRecyclerView.scrollToPosition(0);
@@ -231,6 +238,8 @@ public class IRecyclerViewActivity extends Activity implements IPullCallBacks.IP
 //            mIRecyclerView.getAdapter().notifyItemRangeInserted(0,10);
 
             currentTextView.setText("" + bindDataList.size());
+
+
         }
     };
 
@@ -246,6 +255,12 @@ public class IRecyclerViewActivity extends Activity implements IPullCallBacks.IP
             max_index += t_bindDataList.size();
             int oldSize = bindDataList.size();
             bindDataList.addAll(t_bindDataList);
+
+            if( bindDataList.size() == 0 ){
+                mIRecyclerView.removeFooterView();
+            }else{
+                mIRecyclerView.addFooterView();
+            }
 
             //切记  ：我们自己的RecyclerView调用
             // 是   ：notifyItemRangeInserted(IRecyclerView recyclerView, int positionStart, int itemCount)；

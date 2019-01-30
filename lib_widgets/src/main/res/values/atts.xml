@@ -45,6 +45,13 @@
         <attr name = "recyclerview_pull_more_visible_count"      format = "integer" />
         <attr name = "recyclerview_pull_trigger_dis_pulldown"    format = "dimension" />
         <attr name = "recyclerview_pull_trigger_dis_pullup"      format = "dimension" />
+
+        <attr name = "recyclerview_pull_empter_margin"          format = "dimension" />
+        <attr name = "recyclerview_pull_empter_margin_left"     format = "dimension" />
+        <attr name = "recyclerview_pull_empter_margin_right"    format = "dimension" />
+        <attr name = "recyclerview_pull_empter_margin_top"      format = "dimension" />
+        <attr name = "recyclerview_pull_empter_margin_bottom"   format = "dimension" />
+
     </declare-styleable>
 
 </resources>
